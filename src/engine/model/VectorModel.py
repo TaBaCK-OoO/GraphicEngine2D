@@ -96,7 +96,7 @@ if __name__ == '__main__':
         v["label_offset"] = -0.2, 0.1
 
     def frame2(scene: Scene):
-        v = scene[scene_figure_key]
+        v: VectorModel = scene[scene_figure_key]
 
         v.translation = (1, 2)
         v.rotation = np.radians(20)

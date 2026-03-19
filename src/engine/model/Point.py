@@ -1,5 +1,6 @@
 import numpy as np
 
+from base.text import DEFAULT_LABEL_FONT_SIZE
 from src.base.points import draw_points
 from src.engine.model.Model import Model
 from src.engine.scene.Scene import Scene
@@ -8,15 +9,40 @@ from src.math.Mat3x3 import Mat3x3
 
 class SimplePoint(Model):
 
-    def __init__(self, *vertices):
+    def __init__(self, *vertices,
+                 color="black",
+                 labels=("",),
+                 label_color="black",
+                 label_fontsize=DEFAULT_LABEL_FONT_SIZE,
+                 ):
         super().__init__(*vertices)  # TODO:
+        self.color = color
+        self.labels = labels
+        self.label_color = label_color
+        self.label_fontsize = label_fontsize
 
     def draw_model(self):
         transformed_geometry = self.transformed_geometry
         ps = [el.xy for el in transformed_geometry]
 
-        draw_points(ps, vertex_color=self.color)
+        draw_points(ps, vertex_color=self.color,
+                    labels=self.labels,
+                    labels_color=self.label_color,
+                    labels_font_size=self.label_fontsize,
+                    )
 
+    def __setitem__(self, key, value):
+        if key == "labels":
+            self.labels = value
+            return
+        if key == "label_color":
+            self.label_color = value
+            return
+        if key == "label_fontsize":
+            self.label_fontsize = value
+            return
+
+        super().__setitem__(key, value)
 
 if __name__ == '__main__':
     scene_figure_key = "point"
@@ -27,6 +53,14 @@ if __name__ == '__main__':
             super().__init__(**kwargs)
 
             point = SimplePoint(1, 1, 2, 2, 0, 1)
+            point["labels"] = (
+                ("$P_1$", (0, 0.2)),
+                ("$P_2$", (0, 0.2)),
+                ("$P_3$", (0, 0.2)),
+            )
+            point["label_offset"] = -0.3, 0.1
+            point["label_color"] = "green"
+            point["label_fontsize"] = 22
             self[scene_figure_key] = point
 
 
@@ -56,6 +90,8 @@ if __name__ == '__main__':
         axis_line_style="-."  # стиль ліній осей координат
     )
 
-    scene.add_frames(frame1, frame2)
+    scene.add_frames(frame1,
+                     frame2
+                     )
 
     scene.show()
