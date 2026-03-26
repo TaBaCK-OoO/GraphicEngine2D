@@ -20,7 +20,9 @@ class Scene(ABC):
                  grid_show=True,
                  grid_line_linestyle="solid",
                  greed_alpha=1.0,
-                 keep_aspect_ratio=True, ):
+                 keep_aspect_ratio=True,
+                 out_file = None,
+                 ):
         self.image_size = image_size
         self.coordinate_rect = coordinate_rect
         self.title = title
@@ -33,7 +35,7 @@ class Scene(ABC):
         self.grid_line_linestyle = grid_line_linestyle
         self.greed_alpha = greed_alpha
         self.keep_aspect_ratio = keep_aspect_ratio
-
+        self.out_file = out_file
         self.figure = plt.figure(figsize=self.image_size)
         self.figures = {}
 

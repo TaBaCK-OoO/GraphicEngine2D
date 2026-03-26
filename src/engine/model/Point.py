@@ -6,17 +6,19 @@ from src.engine.model.Model import Model
 from src.engine.scene.Scene import Scene
 from src.math.Mat3x3 import Mat3x3
 
-
+DEFAULT_POINT_SIZE = 50
 class SimplePoint(Model):
 
     def __init__(self, *vertices,
                  color="black",
+                 vertex_size=DEFAULT_POINT_SIZE,
                  labels=("",),
                  label_color="black",
                  label_fontsize=DEFAULT_LABEL_FONT_SIZE,
                  ):
         super().__init__(*vertices)  # TODO:
         self.color = color
+        self.vertex_size = vertex_size
         self.labels = labels
         self.label_color = label_color
         self.label_fontsize = label_fontsize
@@ -26,6 +28,7 @@ class SimplePoint(Model):
         ps = [el.xy for el in transformed_geometry]
 
         draw_points(ps, vertex_color=self.color,
+                    vertex_size=self.vertex_size,
                     labels=self.labels,
                     labels_color=self.label_color,
                     labels_font_size=self.label_fontsize,

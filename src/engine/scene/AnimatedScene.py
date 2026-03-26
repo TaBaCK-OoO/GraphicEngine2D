@@ -7,12 +7,10 @@ from src.engine.scene.Scene import Scene
 
 matplotlib.use("TkAgg")
 
-
 class AnimatedScene(Scene, AnimationFinishedListener):
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-
         self._current_animation = None
         self._animations = []
 
@@ -50,8 +48,9 @@ class AnimatedScene(Scene, AnimationFinishedListener):
                             repeat=animation.repeat,
                             blit=False,
                             )
+        if self.out_file is not None:
+            ani.save(self.out_file, writer="pillow", fps=20)
 
-        #       ani.save("animation.gif", writer="pillow", fps=20)
         Scene._show_plot()
 
     def __on_frame(self, frame):
