@@ -3,18 +3,19 @@ from src.engine.model.Polygon import Polygon
 from src.engine.scene.AnimatedScene import AnimatedScene
 from src.math.Vec3 import vertex
 
+rectangle_vertices = (  # Вершини прямокутника
+    -2, 0,
+    0, 2,
+    2, 0,
+    0, -2
+)
+
 
 class AnimatedSceneSample(AnimatedScene):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
 
-        polygon = Polygon()
-        polygon.set_geometry(-2, 0,
-                             0, 2,
-                             2, 0,
-                             0, -2
-                             )
-
+        polygon = Polygon(*rectangle_vertices)
         polygon.show_local_frame()
         polygon.show_pivot()
 
