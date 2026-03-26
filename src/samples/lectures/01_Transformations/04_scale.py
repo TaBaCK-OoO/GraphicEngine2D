@@ -14,7 +14,7 @@ class AnimatedSceneSample(AnimatedScene):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
 
-        polygon = Polygon(*rectangle_vertices)
+        polygon = Polygon(rectangle_vertices)
         polygon.show_local_frame()
 
         polygon.show_pivot()

@@ -27,19 +27,29 @@ class BaseModel(metaclass=ABCMeta):
 
     def build_geometry(self, *vertices):
         if len(vertices) == 0:
-            geometry = []
-        elif all(isinstance(item, (float, int)) for item in vertices) and len(vertices) % 2 == 0:
-            geometry = [vertex(vertices[i], vertices[i + 1]) for i in range(0, len(vertices), 2)]
+            return []
+
+        if len(vertices) == 1 and isinstance(vertices[0], np.ndarray):
+            return self.build_geometry(tuple(vertices[0]))
+
+        if len(vertices) == 1 and isinstance(vertices[0], (tuple, list)):
+            return self.build_geometry(*vertices[0])
+
+        if all(isinstance(item, (float, int, np.int64)) for item in vertices) and len(vertices) % 2 == 0:
+            return [vertex(vertices[i], vertices[i + 1]) for i in range(0, len(vertices), 2)]
+
         elif all(isinstance(item, Vec3) for item in vertices):
-            geometry = list(vertices)
+            return list(vertices)
+
         elif all(isinstance(item, np.ndarray) and item.shape == (2,) for item in vertices):
-            geometry = [vertex(*item) for item in vertices]
+            return [vertex(*item) for item in vertices]
+
         elif all(isinstance(item, (tuple, list)) and len(item) == 2 for item in vertices):
-            geometry = [vertex(*item) for item in vertices]
+            return [vertex(*item) for item in vertices]
+
         else:
             raise ValueError("Data corrupted")
 
-        return geometry
 
     def __setitem__(self, param, value):
         pass

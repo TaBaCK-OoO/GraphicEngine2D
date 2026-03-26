@@ -17,12 +17,12 @@ class AnimatedSceneSample(AnimatedScene):
         super().__init__(**kwargs)
 
         self[ID_ORIG] = Polygon(
-            *rectangle_vertices,
+            rectangle_vertices,
             linewidth=1.0, color="green"
         )
 
         self[ID] = Polygon(
-            *rectangle_vertices,
+            rectangle_vertices,
             linewidth=3.0, color="red"
         )
 
