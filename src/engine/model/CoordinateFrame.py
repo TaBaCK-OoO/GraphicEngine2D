@@ -18,11 +18,15 @@ class CoordinateFrame(BaseModel):
         self.color = ("red", "green")
         self.line_style = "-"
         self.line_width = 1.0
+        self.head_width_coef = 0.1
+        self.head_length_coef = 0.1
 
     def set_parameters(self,
                        color=None,
                        line_width=None,
-                       line_style=None
+                       line_style=None,
+                       head_width_coef = None,
+                       head_length_coef = None,
                        ):
 
         if color is not None:
@@ -35,6 +39,10 @@ class CoordinateFrame(BaseModel):
             self.line_width = line_width  # товщина осей координат
         if line_style is not None:
             self.line_style = line_style  # стиль ліній осей координат
+        if head_width_coef is not None:
+            self.head_width_coef = head_width_coef
+        if head_length_coef is not None:
+            self.head_length_coef = head_length_coef
 
     def draw_model(self):
         transformed_geometry = self.transformed_geometry
@@ -48,14 +56,18 @@ class CoordinateFrame(BaseModel):
             origin, ox,
             color=self.color[0],
             linewidth=self.line_width,
-            linestyle=self.line_style
+            linestyle=self.line_style,
+            head_length_coef=self.head_length_coef,
+            head_width_coef=self.head_width_coef,
         )
 
         draw_axis(
             origin, oy,
             color=self.color[1],
             linewidth=self.line_width,
-            linestyle=self.line_style
+            linestyle=self.line_style,
+            head_length_coef=self.head_length_coef,
+            head_width_coef=self.head_width_coef,
         )
 
 

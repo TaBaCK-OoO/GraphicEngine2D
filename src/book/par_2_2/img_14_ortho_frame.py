@@ -19,7 +19,7 @@ if __name__ == '__main__':
         draw_fake_rectangular_arc(O, v1, v2,
                                   scale=0.2,
                                   color="blue",
-                                  linestyle="--", linewidth=1.0,
+                                  linestyle="--", linewidth=2.0,
                                   )
 
         print_label(start=v1,
@@ -44,7 +44,14 @@ if __name__ == '__main__':
         axis_line_style="-."  # стиль ліній осей координат
     )
 
-    simple_scene[RECT_KEY] = CoordinateFrame()
+    coord_frame = CoordinateFrame()
+    coord_frame.set_parameters(
+        line_width=3.0,
+        head_width_coef=0.03,
+        head_length_coef=0.05,
+    )
+    simple_scene[RECT_KEY] = coord_frame
+
 
     simple_scene.add_frames(
         frame1,

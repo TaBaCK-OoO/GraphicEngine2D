@@ -2,7 +2,9 @@ from matplotlib import pyplot as plt
 
 
 def draw_axis(start, end,
-              color="black", linewidth=1.0, linestyle=":", ):
+              color="black", linewidth=1.0, linestyle=":",
+              head_width_coef=0.1, head_length_coef = 0.1,
+              ):
     plt.plot([start[0], end[0]], [start[1], end[1]],
              color=color,
              linestyle=linestyle,
@@ -13,8 +15,8 @@ def draw_axis(start, end,
 
     plt.arrow(
         end[0], end[1], u * 0.015, v * 0.015,
-        head_width=linewidth * 0.1,
-        head_length=linewidth * 0.1,
+        head_width=linewidth * head_width_coef,
+        head_length=linewidth * head_length_coef,
         fc=color, ec=color,
         linewidth=linewidth
     )
