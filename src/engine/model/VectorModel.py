@@ -12,7 +12,7 @@ class VectorModel(Model):
     def __init__(self, *direction,
                  color="black",
                  line_style = "solid",
-                 linewidth = "1.0",
+                 linewidth = 1.0,
                  label="",
                  label_color="black",
                  label_fontsize=DEFAULT_LABEL_FONT_SIZE,

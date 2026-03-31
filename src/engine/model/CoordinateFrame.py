@@ -18,7 +18,7 @@ class CoordinateFrame(BaseModel):
         self.color = ("red", "green")
         self.line_style = "-"
         self.line_width = 1.0
-        self.head_width_coef = 0.1
+        self.head_width_coef = 0.05
         self.head_length_coef = 0.1
 
     def set_parameters(self,
