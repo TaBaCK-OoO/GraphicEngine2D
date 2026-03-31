@@ -35,8 +35,14 @@ class AnimScene(AnimatedScene):
 
 
 if __name__ == '__main__':
-    animated_scene = AnimScene()
+    animated_scene = AnimScene(
+        title="",  # заголовок рисунка
+        image_size=(10, 10),  # розмір зображення: 1 - 100 пікселів
+        coordinate_rect=(-1, -1, -1, 1, 1, 1),  # розмірність системи координат
+    )
 
-    animated_scene.add_animations(animation_quat)
+    animated_scene.add_animations(
+        animation_quat,
+    )
 
     animated_scene.show()
