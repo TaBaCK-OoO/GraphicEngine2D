@@ -1,3 +1,5 @@
+import numpy as np
+
 from base.arc import draw_arc
 from base.text import print_label
 from engine.model.Axis import Axis
@@ -19,13 +21,16 @@ if __name__ == '__main__':
     x_dir = 3.1, 0
     z_dir = -1.4, -1.2
     y_dir = 0, 2.4
-    v_dir = 1.6, 0.9
-    v_arrow = 1.75, 0.95
+    v_dir = np.array([1.6, 0.9])
+    v_arrow = v_dir + (0.14, 0.07)
     v_proj_vert =  1.7, -0.8
     v_proj_oxy_ccords =  1.7, -0.8
     v_proj_z_coord = -0.9, -0.8
     v_proj_x_coord = 2.8, 0.0
     v_proj_y_coord =  (0.0, 0.8 + 0.9 + 0.15)
+    label_v_x_coord = 0.2, -1.1
+    label_v_y_coord = -0.4, 0.9
+    label_v_z_coord = 2.45, -0.6
 
     Ox = Axis(x_dir, color="red", linewidth=1.5, label="$x$", label_offset=(0.1, 0.1))
     Oy = Axis(y_dir, color="green", linewidth=1.5, label="$y$", label_offset=(0.1, 0.2))
@@ -61,6 +66,30 @@ if __name__ == '__main__':
         print_label(start= orig,
                     label=r"$\theta$",
                     label_offset=(0.1, 0.45),
+                    label_fontsize=LABEL_FONT_SIZE,
+                    )
+
+        print_label(start= orig,
+                    label=r"$\theta$",
+                    label_offset=(0.1, 0.45),
+                    label_fontsize=LABEL_FONT_SIZE,
+                    )
+
+        print_label(start= label_v_x_coord,
+                    label=r"$v_x$",
+                    label_color="red",
+                    label_fontsize=LABEL_FONT_SIZE,
+                    )
+
+        print_label(start= label_v_y_coord,
+                    label=r"$v_y$",
+                    label_color="green",
+                    label_fontsize=LABEL_FONT_SIZE,
+                    )
+
+        print_label(start= label_v_z_coord,
+                    label=r"$v_z$",
+                    label_color="blue",
                     label_fontsize=LABEL_FONT_SIZE,
                     )
 
