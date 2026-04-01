@@ -1,6 +1,6 @@
 import numpy as np
 
-from engine.scene.Scene import Scene
+from src.engine.scene.Scene import Scene
 from src.math.Mat3x3 import Mat3x3
 from src.base.axes import draw_axis
 from src.engine.model.BaseModel import BaseModel

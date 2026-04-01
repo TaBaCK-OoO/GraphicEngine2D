@@ -1,4 +1,4 @@
-from engine.animation.TrsTransformationAnimation import TrsTransformationAnimation
+from src.engine.animation.TrsTransformationAnimation import TrsTransformationAnimation
 from src.engine.model.Polygon import Polygon
 from src.engine.scene.AnimatedScene import AnimatedScene
 from src.math.Mat3x3 import Mat3x3

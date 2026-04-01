@@ -1,6 +1,6 @@
 import numpy as np
 
-from engine.model.VectorModel import VectorModel
+from src.engine.model.VectorModel import VectorModel
 from src.engine.animation.TrsTransformationAnimation import TrsTransformationAnimation
 from src.engine.scene.AnimatedScene import AnimatedScene
 from src.math.Mat3x3 import Mat3x3

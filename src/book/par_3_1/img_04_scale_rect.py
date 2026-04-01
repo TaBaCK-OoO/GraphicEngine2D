@@ -1,6 +1,6 @@
-from engine.model.Point import SimplePoint
-from engine.model.Polygon import Polygon
-from engine.scene.Scene import Scene
+from src.engine.model.Point import SimplePoint
+from src.engine.model.Polygon import Polygon
+from src.engine.scene.Scene import Scene
 from src.math.Mat3x3 import Mat3x3
 
 ID_VERTICES = "ID_VERTICES"

@@ -1,9 +1,8 @@
 import numpy as np
 
-from base.text import print_label
-from engine.model.CoordinateFrame import CoordinateFrame
-from engine.model.Point import SimplePoint
-from engine.model.VectorModel import VectorModel
+from src.base.text import print_label
+from src.engine.model.Point import SimplePoint
+from src.engine.model.VectorModel import VectorModel
 from src.engine.scene.Scene import Scene
 
 O = np.array([0, 0])

@@ -1,8 +1,8 @@
 import numpy as np
 
-from base.arc import draw_fake_rectangular_arc
-from base.text import print_label
-from engine.model.CoordinateFrame import CoordinateFrame
+from src.base.arc import draw_fake_rectangular_arc
+from src.base.text import print_label
+from src.engine.model.CoordinateFrame import CoordinateFrame
 from src.engine.scene.Scene import Scene
 
 O = np.array([0, 0])

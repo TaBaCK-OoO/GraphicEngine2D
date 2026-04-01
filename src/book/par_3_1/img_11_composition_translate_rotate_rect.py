@@ -1,6 +1,6 @@
 import numpy as np
 
-from engine.scene.Scene import Scene
+from src.engine.scene.Scene import Scene
 from src.engine.model.Polygon import Polygon
 from src.math.Mat3x3 import Mat3x3
 

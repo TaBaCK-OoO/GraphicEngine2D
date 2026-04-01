@@ -1,10 +1,10 @@
 import numpy as np
 
-from base.arc import draw_arc
-from base.text import print_label
-from engine.model.LineModel import LineModel
-from engine.model.VectorModel import VectorModel
-from engine.scene.Scene import Scene
+from src.base.arc import draw_arc
+from src.base.text import print_label
+from src.engine.model.LineModel import LineModel
+from src.engine.model.VectorModel import VectorModel
+from src.engine.scene.Scene import Scene
 from src.math.Mat3x3 import Mat3x3
 from src.math.Vec3 import Vec3
 

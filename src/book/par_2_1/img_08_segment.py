@@ -1,9 +1,7 @@
 import numpy as np
 
-from engine.model.LineModel import LineModel
-from engine.model.Point import SimplePoint
-from engine.model.VectorModel import VectorModel
-from src.base.arrow import draw_vector
+from src.engine.model.LineModel import LineModel
+from src.engine.model.Point import SimplePoint
 from src.engine.scene.Scene import Scene
 
 FIGURE_LINE = "LINE_FIGURE"

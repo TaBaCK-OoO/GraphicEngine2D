@@ -1,5 +1,5 @@
-from engine.model.VectorModel import VectorModel
-from engine.scene.Scene import Scene
+from src.engine.model.VectorModel import VectorModel
+from src.engine.scene.Scene import Scene
 from src.math.Mat3x3 import Mat3x3
 
 ID_ORIG = "Vector_Orig"

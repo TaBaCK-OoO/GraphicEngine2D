@@ -1,10 +1,8 @@
 import numpy as np
 
-from base.arc import draw_arc
-from base.text import print_label
-from engine.model.Axis import Axis
-from engine.model.LineModel import LineModel
-from engine.scene.Scene import Scene
+from src.base.text import print_label
+from src.engine.model.Axis import Axis
+from src.engine.scene.Scene import Scene
 
 LABEL_FONT_SIZE = 20
 

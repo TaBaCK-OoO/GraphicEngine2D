@@ -1,9 +1,6 @@
 import numpy as np
 
-from engine.model.LineModel import LineModel
-from engine.model.Point import SimplePoint
-from engine.model.VectorModel import VectorModel
-from src.base.arrow import draw_vector
+from src.engine.model.VectorModel import VectorModel
 from src.engine.scene.Scene import Scene
 
 FIGURE_E_1 = "$a$"

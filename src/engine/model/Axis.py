@@ -1,8 +1,8 @@
 import numpy as np
 
-from base.text import print_label
-from engine.model.VectorModel import VectorModel
-from engine.scene.Scene import Scene
+from src.base.text import print_label
+from src.engine.model.VectorModel import VectorModel
+from src.engine.scene.Scene import Scene
 from src.base.axes import draw_axis
 from src.math.Vec3 import vertex
 

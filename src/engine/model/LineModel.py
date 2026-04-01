@@ -1,6 +1,6 @@
 import numpy as np
 
-from base.lines import draw_line
+from src.base.lines import draw_line
 from src.engine.model.Model import Model
 from src.engine.scene.Scene import Scene
 from src.math.Vec3 import Vec3, vertex

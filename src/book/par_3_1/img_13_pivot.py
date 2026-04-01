@@ -1,5 +1,5 @@
-from engine.model.Point import SimplePoint
-from engine.scene.Scene import Scene
+from src.engine.model.Point import SimplePoint
+from src.engine.scene.Scene import Scene
 from src.engine.model.Polygon import Polygon
 from src.math.Mat3x3 import Mat3x3
 

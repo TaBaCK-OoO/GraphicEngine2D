@@ -1,12 +1,9 @@
 import numpy as np
 
-from base.arc import draw_fake_rectangular_arc, draw_arc
-from base.text import print_label
-from engine.model.Point import SimplePoint
-from engine.model.Polygon import Polygon
-from engine.model.VectorModel import VectorModel
-from engine.scene.Scene import Scene
-from src.math.Mat3x3 import Mat3x3
+from src.base.arc import draw_arc
+from src.base.text import print_label
+from src.engine.model.VectorModel import VectorModel
+from src.engine.scene.Scene import Scene
 
 ID_VERTICES = "ID_VERTICES"
 ID_CENTER = "Center"
