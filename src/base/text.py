@@ -27,7 +27,6 @@ if __name__ == '__main__':
 
     scene = Scene(
         coordinate_rect=(0, 0, 1, 1),
-        grid_show=True,
     )
     scene.add_frames(frame1)
     scene.show()
