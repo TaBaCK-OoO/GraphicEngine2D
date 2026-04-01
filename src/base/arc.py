@@ -11,14 +11,22 @@ def draw_arc(origin, v1, v2,
              radius=1.0,  # Радіус дуги
              color="black",
              linestyle="solid", linewidth=1.0,
-
+             reverse=False,
+             num_points = 10, # Кількість точок дуги
              ):
     # Кути між векторами
     theta1 = np.arctan2(v1[1], v1[0])  # Кут першого вектора
     theta2 = np.arctan2(v2[1], v2[0])  # Кут другого вектора
 
+    # Якщо потрібно намалювати дугу з іншого боку
+    if reverse:
+        if theta1 < theta2:
+            theta2 -= 2 * np.pi  # Йдемо у від'ємному напрямку
+        else:
+            theta2 += 2 * np.pi  # Йдемо у додатному напрямку
+
     # Генерація точок дуги
-    angles = np.linspace(theta1, theta2, 10)  # Усі кути між двома векторами
+    angles = np.linspace(theta1, theta2, num_points)  # Усі кути між двома векторами
 
     x_arc = origin[0] + radius * np.cos(angles)  # X-координати дуги
     y_arc = origin[1] + radius * np.sin(angles)  # Y-координати дуги
