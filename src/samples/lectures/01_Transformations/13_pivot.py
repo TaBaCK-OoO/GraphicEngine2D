@@ -45,8 +45,8 @@ class AnimatedSceneSample(AnimatedScene):
             rectangle_vertices,
             linewidth=3.0, color="red",
         )
-        rect2.pivot(0.5, 0.5)
-        rect2.show_pivot(True)
+        # rect2.pivot(0.5, 0.5)
+        # rect2.show_pivot(True)
         self[ID_RECT2] = rect2
 
 
@@ -79,7 +79,7 @@ if __name__ == '__main__':
         0, 0, 1
     )
 
-    T = Mat3x3(  # перенос на вектор (0.5, 0.5)
+    T = Mat3x3(  # перенос на вектор (-0.5, -0.5)
         1, 0, -pivot_vectex[0],
         0, 1, -pivot_vectex[1],
         0, 0, 1
@@ -91,8 +91,8 @@ if __name__ == '__main__':
         TrsTransformationAnimation(end=S, channel=ID_RECT, apply_geometry_transformation_on_finish=True),
         TrsTransformationAnimation(end=R, channel=ID_RECT, apply_geometry_transformation_on_finish=True),
         TrsTransformationAnimation(end=T.inverse(), channel=ID_RECT, apply_geometry_transformation_on_finish=True),
-        # TrsTransformationAnimation(end=T.inverse() * R * S * T, channel=ID_RECT2, apply_geometry_transformation_on_finish=True),
-        TrsTransformationAnimation(end= R * S, channel=ID_RECT2, apply_geometry_transformation_on_finish=True),
+        TrsTransformationAnimation(end=T.inverse() * R * S * T, channel=ID_RECT2, apply_geometry_transformation_on_finish=True),
+        # TrsTransformationAnimation(end= R * S, channel=ID_RECT2, apply_geometry_transformation_on_finish=True),
     )
 
     scene.show()
