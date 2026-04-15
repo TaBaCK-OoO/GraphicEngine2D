@@ -79,21 +79,18 @@ if __name__ == '__main__':
         axis=ax,
         frames=frames_num,
         channel=RECT_KEY,
-        apply_geometry_transformation_on_finish=True,
     )
 
     animation_trans = TranslationAnimation(
         translation_vector,
         frames=frames_num,
         channel=RECT_KEY,
-        apply_geometry_transformation_on_finish=True,
     )
 
     animation_scale = ScaleAnimation(
         scales,
         frames=frames_num,
         channel=RECT_KEY,
-        apply_geometry_transformation_on_finish=True,
     )
 
     common_animation = TrsTransformationAnimation(
@@ -101,7 +98,6 @@ if __name__ == '__main__':
         frames=frames_num,
         interval=5,
         channel=RECT_2_KEY,
-        apply_geometry_transformation_on_finish=True,
     )
 
     animated_scene.add_animation(animation_scale)

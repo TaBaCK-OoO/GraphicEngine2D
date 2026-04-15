@@ -58,7 +58,6 @@ if __name__ == '__main__':
         frames=frames_num,
         interval=5,
         channel=RECT_KEY,
-        apply_geometry_transformation_on_finish=True,
     )
 
     animation_ax = RotationAnimation(
@@ -66,7 +65,6 @@ if __name__ == '__main__':
         axis=ax,
         frames=frames_num,
         channel=RECT_KEY1,
-        apply_geometry_transformation_on_finish=True,
     )
 
     animated_scene.add_animation(animation_ax)

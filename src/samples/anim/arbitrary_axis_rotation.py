@@ -47,7 +47,6 @@ if __name__ == '__main__':
         axis=ax,
         frames=frames_num,
         channel=RECT_KEY,
-        apply_geometry_transformation_on_finish=True,
     )
 
     animated_scene.add_animation(animation)

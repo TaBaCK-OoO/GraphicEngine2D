@@ -39,7 +39,6 @@ if __name__ == '__main__':
         frames=time,
         interval=5,
         channel=RECT_KEY,
-        apply_geometry_transformation_on_finish=True,
     )
 
     animation_y = RotationAnimation(
@@ -48,7 +47,6 @@ if __name__ == '__main__':
         frames=time,
         interval=5,
         channel=RECT_KEY,
-        apply_geometry_transformation_on_finish=True,
     )
 
     animation_z = RotationAnimation(
@@ -57,7 +55,6 @@ if __name__ == '__main__':
         frames=time,
         interval=5,
         channel=RECT_KEY,
-        apply_geometry_transformation_on_finish=True,
     )
 
     class SimplePolygonScene(AnimatedScene):

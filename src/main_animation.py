@@ -19,7 +19,6 @@ q_final = qz * qy * qx
 animation_quat = QuaternionAnimation(
     end_quaternion=q_final,
     channel=CUBE_KEY,
-    apply_geometry_transformation_on_finish=True,
 )
 
 

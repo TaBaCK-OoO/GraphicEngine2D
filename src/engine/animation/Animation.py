@@ -15,7 +15,7 @@ class Animation(ABC):
                  frames=60,  # Кількість кадрів анімації 60 (при інтервалі 16 мілісекунд буде 1 секунда)
                  interval=16,  # Час в мілісекундах між кадрами анімації
                  repeat=False,  # Чи циклічна анімація
-                 apply_geometry_transformation_on_finish=False,  # Чи трансформує анімація всі вертекси на фініші
+                 apply_geometry_transformation_on_finish=True,  # Чи трансформує анімація всі вертекси на фініші
                  animation_listener=None,  # спостерігач
                  ):
         self.start = Mat4x4.identity()

@@ -39,7 +39,6 @@ if __name__ == '__main__':
         frames=frames_num,
         interval=interval,
         channel=RECT_KEY,
-        apply_geometry_transformation_on_finish=True,
     )
 
     OY1 = Rx * OY
@@ -51,7 +50,6 @@ if __name__ == '__main__':
         frames=frames_num,
         interval=interval,
         channel=RECT_KEY,
-        apply_geometry_transformation_on_finish=True,
     )
 
     rot_y = Mat4x4.rotation(np.radians(angle_y), OY1)
@@ -64,7 +62,6 @@ if __name__ == '__main__':
         frames=frames_num,
         interval=interval,
         channel=RECT_KEY,
-        apply_geometry_transformation_on_finish=True,
     )
 
 

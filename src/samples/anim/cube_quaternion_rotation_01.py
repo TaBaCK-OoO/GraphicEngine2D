@@ -19,23 +19,19 @@ if __name__ == '__main__':
     animation = QuaternionAnimation(
         q_final,
         channel=CUBE_KEY,
-        apply_geometry_transformation_on_finish=True,
     )
 
     animation_x = QuaternionAnimation(
         qx,
         channel=CUBE_KEY,
-        apply_geometry_transformation_on_finish=True,
     )
     animation_y = QuaternionAnimation(
         qy,
         channel=CUBE_KEY,
-        apply_geometry_transformation_on_finish=True,
     )
     animation_z = QuaternionAnimation(
         qz,
         channel=CUBE_KEY,
-        apply_geometry_transformation_on_finish=True,
     )
 
 
