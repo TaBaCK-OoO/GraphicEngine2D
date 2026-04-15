@@ -1,3 +1,5 @@
+import math
+
 import numpy as np
 from scipy.spatial.transform import Rotation
 from scipy.spatial.transform import Rotation as R
@@ -6,7 +8,6 @@ from src.math.Mat3x3 import Mat3x3
 from src.math.Mat4x4 import Mat4x4
 from src.math.Quaternion import Quaternion
 from src.math.Rotations import get_rotation_angle
-from src.math.Vec3 import Vec3
 
 
 def is_orthogonal(matrix, tol=1e-6):
@@ -158,3 +159,65 @@ def decompose_affine3(transition):
 
         return translation, angle, scales
 
+def decompose_affine_2(matrix):
+    """
+    Декомпозиція матриці 4x4 на трансляцію (T), масштабування (S) і обертання (R).
+    Також обчислює вісь та кут повороту.
+    """
+    # Виділяємо трансляцію (останній стовпець без останнього елемента)
+    T = matrix[:3, 3]
+
+    # Виділяємо лінійне перетворення (верхня ліва 3x3 підматриця)
+    M = matrix[:3, :3]
+
+    # Отримуємо масштабування (довжини стовпців)
+    S = np.linalg.norm(M, axis=0)
+
+    # Нормалізуємо M, щоб прибрати масштабування і отримати чисте обертання
+    # Використовуємо захист від ділення на нуль, якщо масштаб дорівнює 0
+    R = M / S
+
+    # --- Отримуємо кут повороту ---
+    # cos(theta) = (Tr(R) - 1) / 2
+    trace = R[0, 0] + R[1, 1] + R[2, 2]
+    cos_theta = np.clip((trace - 1.0) / 2.0, -1.0, 1.0)
+    angle = np.arccos(cos_theta)
+
+    # --- Отримуємо вісь обертання ---
+    if np.isclose(angle, 0.0):
+        # Випадок 0: Обертання відсутнє, вісь може бути будь-якою
+        axis = np.array([1.0, 0.0, 0.0])
+
+    elif np.isclose(angle, np.pi):
+        # Випадок 180 градусів: sin(theta) = 0, метод різниці r_ij не працює.
+        # Шукаємо вісь через діагональні елементи.
+        diag = np.diag(R)
+        axis = np.sqrt(np.maximum((diag + 1.0) / 2.0, 0.0))
+
+        # Визначаємо знаки компонентів осі за недіагональними елементами
+        if R[0, 1] < 0: axis[1] = -axis[1]
+        if R[0, 2] < 0: axis[2] = -axis[2]
+        if R[1, 2] < 0 and axis[1] * axis[2] > 0: axis[2] = -axis[2]
+
+        axis = axis / np.linalg.norm(axis)
+
+    else:
+        # Загальний випадок: використовуємо антисиметричну частину матриці
+        # u = [r21 - r12, r02 - r20, r10 - r01]
+        axis = np.array([
+            R[2, 1] - R[1, 2],
+            R[0, 2] - R[2, 0],
+            R[1, 0] - R[0, 1]
+        ])
+        # Нормалізуємо, щоб отримати одиничний вектор
+        axis = axis / np.linalg.norm(axis)
+
+    return T, R, S, axis, angle
+
+if __name__ == '__main__':
+    an, ax = math.pi / 7, (1, 2, 1)
+    R = Mat4x4.rotation(an, ax)
+
+    T1, R1, S1, axis1, angle1 = decompose_affine_2(R)
+    print(an, ax)
+    print(angle1, axis1)
