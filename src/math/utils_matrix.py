@@ -217,7 +217,10 @@ def decompose_affine_2(matrix):
 if __name__ == '__main__':
     an, ax = math.pi / 7, (1, 2, 1)
     R = Mat4x4.rotation(an, ax)
+    T  = Mat4x4.translation(1, 1, 1)
+    S = Mat4x4.scale(2, 2, 2)
 
     T1, R1, S1, axis1, angle1 = decompose_affine_2(R)
+    T2, R2, S2, axis2, angle2 = decompose_affine_2(T * R * S)
     print(an, ax)
     print(angle1, axis1)
