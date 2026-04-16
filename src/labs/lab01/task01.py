@@ -19,12 +19,13 @@ if __name__ == '__main__':
             super().__init__(**kwargs)
             cube = Cube(self.plt_axis, alpha=0.1)
             self[CUBE_KEY] = cube
-            cube.show_pivot()
+            # cube.show_pivot()
             cube.show_local_frame()
 
-            cube_target = Cube(self.plt_axis, alpha=0.1, color="grey", line_width=0.5, line_style="-.")
+            cube_target = Cube(self.plt_axis,
+                               alpha=0.1, color="grey",
+                               line_width=0.5, line_style="-.")
             self[CUBE_TARGET_KEY] = cube_target
-
 
     animated_scene = CubeScene()
 
@@ -38,11 +39,7 @@ if __name__ == '__main__':
     Ry = Mat4x4.rotation_y(angle_y)
     Rz = Mat4x4.rotation_z(angle_z)
 
-    R_final = (
-            Rz *
-            Ry *
-            Rx
-    )
+    R_final = Rz * Ry * Rx
 
     animation_x = RotationAnimation(
         end=angle_x,
@@ -64,7 +61,7 @@ if __name__ == '__main__':
 
     animation = TrsTransformationAnimation(
         end=R_final,
-        channel=CUBE_KEY,
+        channel=CUBE_TARGET_KEY,
     )
 
     animated_scene.add_animations(
