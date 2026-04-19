@@ -24,25 +24,25 @@ def test_rotation_from_quaternion_and_directly():
     angle, axis = np.radians(30), Vec3(1, 2, 3).normalized()
 
     m_rot = Mat4x4.rotation(angle, axis)
-    assert is_same_matrix(m_rot, M_orig), f"Матриці трансформацій не однакові"
+    assert is_same_matrix(m_rot, M_orig), "Transformation matrices are not equal"
 
     q = Quaternion.rotation(angle, axis)
     m_rot_from_q = q.toRotationMatrix()
 
-    assert is_same_matrix(m_rot, m_rot_from_q), f"Матриці трансформацій не однакові"
+    assert is_same_matrix(m_rot, m_rot_from_q), "Transformation matrices are not equal"
 
 
 def test_angle_axis_directly():
     angle_restored, axis_restored = M_orig.to_angle_axis()
-    assert np.allclose(axis_orig.data, axis_restored.data), f"Оригінальна вісь {axis_orig}, відновлена {axis_restored}"
-    assert np.allclose(angle_orig, angle_restored), f"Оригінальний кут {angle_orig}, відновлений {angle_restored}"
+    assert np.allclose(axis_orig.data, axis_restored.data), f"Original axis {axis_orig}, restored {axis_restored}"
+    assert np.allclose(angle_orig, angle_restored), f"Original angle {angle_orig}, restored {angle_restored}"
 
 
 def test_angle_axis():
     q_restored = rotation_matrix_to_quaternion(M_orig)
-    assert np.allclose(q_restored.q, q_orig.q), f"Оригінальний кватерніон {q_orig}, відновлений {q_restored}"
+    assert np.allclose(q_restored.q, q_orig.q), f"Original quaternion {q_orig}, restored {q_restored}"
 
     angle_restored, axis_restored = q_restored.to_angle_axis()
-    assert np.allclose(axis_orig.data, axis_restored.data), f"Оригінальна вісь {axis_orig}, відновлена {angle_restored}"
-    assert np.allclose(angle_orig, angle_restored), f"Оригінальний кут {angle_orig}, відновлений {angle_restored}"
+    assert np.allclose(axis_orig.data, axis_restored.data), f"Original axis {axis_orig}, restored {angle_restored}"
+    assert np.allclose(angle_orig, angle_restored), f"Original angle {angle_orig}, restored {angle_restored}"
 

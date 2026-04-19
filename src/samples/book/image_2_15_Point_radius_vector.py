@@ -65,12 +65,12 @@ if __name__ == '__main__':
             label_offset=(0.0, -0.3, 0.3))
 
     scene = VectorScene(
-        image_size=(10, 10),  # розмір зображення: 1 - 100 пікселів
-        coordinate_rect=(-1, -1, -1, 3, 3, 3),  # розмірність системи координат
-        title="3D система координат",  # заголовок рисунка
-        axis_color=("grey", "grey", "grey"),  # колір осей координат
+        image_size=(10, 10),  # image size: 1 - 100 pixels
+        coordinate_rect=(-1, -1, -1, 3, 3, 3),  # coordinate system dimensions
+        title="3D coordinate system",  # figure title
+        axis_color=("grey", "grey", "grey"),  # coordinate axis color
         axis_line_width=1.0,
-        axis_line_style="--",  # стиль ліній осей координат
+        axis_line_style="--",  # coordinate axis line style
         axis_show_from_origin=True,
     )
 

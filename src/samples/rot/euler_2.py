@@ -32,7 +32,7 @@ print(mat)
 print()
 rotation_matrix_intrinsic = (R.from_euler(config, (phi, theta, psi)).as_matrix())
 
-# Вивід матриці
+# Print matrix
 print(rotation_matrix_intrinsic)
 
 print("is the same:", is_same_matrix(mat, rotation_matrix_intrinsic))

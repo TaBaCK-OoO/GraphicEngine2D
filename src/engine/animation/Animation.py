@@ -10,13 +10,13 @@ ANIMATION_PLAYED = "ANIMATION_FINISHED"
 class Animation(ABC):
 
     def __init__(self,
-                 end,  # Кінцеве значення трасформації
-                 channel="default",  # ідентифікатор фігури до якої має застосовуватися анімація
-                 frames=60,  # Кількість кадрів анімації 60 (при інтервалі 16 мілісекунд буде 1 секунда)
-                 interval=16,  # Час в мілісекундах між кадрами анімації
-                 repeat=False,  # Чи циклічна анімація
-                 apply_geometry_transformation_on_finish=True,  # Чи трансформує анімація всі вертекси на фініші
-                 animation_listener=None,  # спостерігач
+                 end,  # Final transformation value
+                 channel="default",  # identifier of the figure to which the animation should be applied
+                 frames=60,  # Number of animation frames, 60 (at 16 ms interval = 1 second)
+                 interval=16,  # Time in milliseconds between animation frames
+                 repeat=False,  # Whether the animation loops
+                 apply_geometry_transformation_on_finish=True,  # Whether the animation transforms all vertices at finish
+                 animation_listener=None,  # listener
                  ):
         self.start = Mat4x4.identity()
         self.end_rotation = end

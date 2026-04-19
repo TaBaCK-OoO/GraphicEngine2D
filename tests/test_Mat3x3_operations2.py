@@ -3,7 +3,7 @@ import numpy as np
 from src.math.Mat3x3 import Mat3x3
 from src.math.Vec3 import Vec3
 
-IDENTITY = Mat3x3()  # одинична 3x3 матриця
+IDENTITY = Mat3x3()  # identity 3x3 matrix
 
 # 1. Mat3x3 @ Mat3x3
 def test_matmul_with_mat3x3():

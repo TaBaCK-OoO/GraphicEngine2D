@@ -41,7 +41,7 @@ if __name__ == '__main__':
 
 
     animated_scene = SimplePolygonScene(
-        coordinate_rect=(-1, -1, -1, 3, 3, 3),  # розмірність системи координатps
+        coordinate_rect=(-1, -1, -1, 3, 3, 3),  # coordinate system dimensionsps
     )
 
     transformation_matrix = (

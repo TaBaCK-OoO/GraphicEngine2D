@@ -16,7 +16,7 @@ class Cube(Model):
         super().__init__(plt_axis)
         self.polygons = []
 
-        # вершини куба
+        # cube vertices
         vertices = [
             [0, 0, 0],
             [1, 0, 0],
@@ -28,7 +28,7 @@ class Cube(Model):
             [0, 1, 1]
         ]
 
-        # Грані куба
+        # cube faces
         faces = [
             [vertices[j] for j in [0, 1, 2, 3]],
             [vertices[j] for j in [4, 5, 6, 7]],
@@ -77,7 +77,7 @@ if __name__ == '__main__':
 
 
     simple_scene = CubeScene(
-        axis_color="grey",  # колір осей координат
+        axis_color="grey",  # coordinate axis color
     )
 
     simple_scene.show()

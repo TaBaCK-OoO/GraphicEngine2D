@@ -9,7 +9,7 @@ def draw_poly(plt_axis, vertices,
               edgecolor='black',
               facecolor="cyan"
               ):
-    # Малюємо полігон
+    # Draw polygon
     polygon = Poly3DCollection([vertices], alpha=alpha, edgecolor=edgecolor, facecolor=facecolor)
     plt_axis.add_collection3d(polygon)
 

@@ -38,7 +38,7 @@ if __name__ == '__main__':
 
 
     animated_scene = SimplePolygonScene(
-        coordinate_rect=(-1, -1, -1, 2, 2, 2),  # розмірність системи координатps
+        coordinate_rect=(-1, -1, -1, 2, 2, 2),  # coordinate system dimensions
     )
 
     frames_num = 180

@@ -9,15 +9,15 @@ from src.math.Vec4 import Vec4
 
 
 class Mat4x4:
-    ERROR_MESSAGE_CONSTRUCTOR = "Непідтриманий тип даних для ініціалізації або недостатньо елементів для побудови матриці 4x4."
-    ERROR_MESSAGE_ADD = "Додавання можливе лише з іншими об'єктами Matrix4x4 або numpy.ndarray 4x4."
-    ERROR_MESSAGE_MULT = "Множення можливе лише з іншими об'єктами Matrix4x4 або numpy.ndarray 4x4."
-    ERROR_MESSAGE_INV_DOESNT_EXIST = "Матриця не має оберненої."
-    ERROR_MESSAGE_ROTATION = "Вектор повороту повинен містити рівно 3 дійсних елементи."
-    ERROR_MESSAGE_SCALE = "Недостатньо даних, щоб сформувати матрицю розтягу"
+    ERROR_MESSAGE_CONSTRUCTOR = "Unsupported data type or insufficient elements to build a 4x4 matrix."
+    ERROR_MESSAGE_ADD = "Addition is only possible with other Matrix4x4 objects or numpy.ndarray 4x4."
+    ERROR_MESSAGE_MULT = "Multiplication is only possible with other Matrix4x4 objects or numpy.ndarray 4x4."
+    ERROR_MESSAGE_INV_DOESNT_EXIST = "Matrix has no inverse."
+    ERROR_MESSAGE_ROTATION = "Rotation vector must contain exactly 3 real elements."
+    ERROR_MESSAGE_SCALE = "Insufficient data to construct the scale matrix."
     ERROR_MESSAGE_EULER_CONFIG_UNKNOWN = "Unknown Euler configuration"
 
-    # Tait-Bryan конфігурації (всі осі різні)
+    # Tait-Bryan configurations (all axes different)
     XYZ = "XYZ"
     XZY = "XZY"
     YXZ = "YXZ"
@@ -25,7 +25,7 @@ class Mat4x4:
     ZXY = "ZXY"
     ZYX = "ZYX"
 
-    # Власні кути Ейлера (перша та третя вісь однакові)
+    # Proper Euler angles (first and third axes are the same)
     XYX = "XYX"
     XZX = "XZX"
     YXY = "YXY"
@@ -35,15 +35,15 @@ class Mat4x4:
 
     def __init__(self, *data):
         """
-        Конструктор класу Matrix3x3.
-        Якщо дані не передані, створює одиничну матрицю.
-        Приймає:
-        - 3x3 матрицю (numpy.ndarray),
-        - список списків 2x2 або 3x3,
-        - інший об'єкт Matrix3x3.
+        Matrix4x4 class constructor.
+        If no data is provided, creates an identity matrix.
+        Accepts:
+        - a 4x4 matrix (numpy.ndarray),
+        - a list of lists 2x2 or 3x3 or 4x4,
+        - another Matrix4x4 or Matrix3x3 object.
         """
         if len(data) == 0:
-            # Якщо дані не передані, створюємо одиничну матрицю
+            # If no data is provided, creates an identity matrix
             self.data = np.eye(4, dtype=float)
         elif len(data) == 16:
             elements = np.array(data, dtype=float)
@@ -66,24 +66,24 @@ class Mat4x4:
         elif len(data) == 1:
             data = data[0]
             if isinstance(data, Mat4x4):
-                # Якщо переданий об'єкт Matrix4x4
+                # If a Mat4x4 object is passed
                 self.data = np.copy(data.data)
             elif isinstance(data, Mat3x3):
-                # Якщо переданий об'єкт Matrix3x3
+                # If a Matrix3x3 object is passed
                 self.data = np.eye(4, dtype=float)
                 self.data[:3, :3] = data.data
             elif isinstance(data, (list, tuple, np.ndarray)):
                 try:
                     data = np.array(data)
                     if data.shape == (4, 4):
-                        # Якщо передана 4x4 матриця
+                        # If a 4x4 matrix is passed
                         self.data = np.array(data, dtype=float)
                     elif data.shape == (3, 3):
-                        # Якщо передана 3x3 матриця, доповнюємо до 4x4
+                        # If a 3x3 matrix is passed, padded to 4x4
                         self.data = np.eye(4, dtype=float)
                         self.data[:3, :3] = data
                     elif data.shape == (2, 2):
-                        # Якщо передана 2x2 матриця, доповнюємо до 4x4
+                        # If a 2x2 matrix is passed, padded to 4x4
                         self.data = np.eye(4, dtype=float)
                         self.data[:2, :2] = data
                     else:
@@ -98,14 +98,14 @@ class Mat4x4:
 
     def __getitem__(self, indices):
         """
-        Отримання елемента матриці по індексах (рядок, стовпчик).
+        Get matrix element by indices (row, col).
         """
         row, col = indices
         return self.data[row, col]
 
     def __setitem__(self, indices, value):
         """
-        Встановлення значення елемента матриці по індексах (рядок, стовпчик).
+        Set matrix element value by indices (row, col).
         """
         row, col = indices
         self.data[row, col] = value
@@ -115,13 +115,13 @@ class Mat4x4:
 
     def __str__(self):
         """
-        Повертає строкове представлення матриці.
+        Returns the string representation of the matrix.
         """
         return np.array2string(self.data, formatter={'float_kind': lambda x: f"{x:8.3f}"})
 
     def __matmul__(self, other):
         """
-        Реалізує множення матриці на іншу Matrix3x3, numpy.ndarray 3x3, або Vector3.
+        Implements matrix multiplication with another Matrix3x3, numpy.ndarray 3x3, or Vector3.
         """
         if not isinstance(other, (Mat4x4, np.ndarray, Vec3, Vec4)):
             raise TypeError(Mat4x4.ERROR_MESSAGE_MULT)
@@ -143,7 +143,7 @@ class Mat4x4:
 
     def __add__(self, other):
         """
-        Реалізує додавання двох матриць Matrix3x3 або numpy.ndarray 3x3.
+        Implements addition of two Matrix3x3 or numpy.ndarray 3x3 objects.
         """
         if not isinstance(other, (Mat4x4, np.ndarray)):
             raise TypeError(Mat4x4.ERROR_MESSAGE_ADD)
@@ -163,13 +163,13 @@ class Mat4x4:
 
     def __mul__(self, other):
         """
-        Реалізує множення матриці на іншу Matrix3x3, numpy.ndarray 3x3, або Vector3.
+        Implements matrix multiplication with another Matrix3x3, numpy.ndarray 3x3, or Vector3.
         """
         return self.__matmul__(other)
 
     def inverse(self):
         """
-        Обчислює обернену матрицю.
+        Computes the inverse matrix.
         """
         det = np.linalg.det(self.data)
         if np.isclose(det, 0):
@@ -228,11 +228,11 @@ class Mat4x4:
 
         norm = np.linalg.norm(axis)
 
-        # Нормалізований вектор
+        # Normalized vector
         if norm != 0:
             normalized_v = axis.data / norm
         else:
-            normalized_v = axis  # Для нульового вектора нормалізація не визначена
+            normalized_v = axis  # Normalization is undefined for zero vector
 
         ux, uy, uz = normalized_v
 
@@ -254,12 +254,12 @@ class Mat4x4:
     @staticmethod
     def rotation_euler(phi, theta, psi, configuration=XYZ):
         """
-        Формує матрицю обертання для заданих кутів Ейлера (phi, theta, psi)
-        та конфігурації осей обертання.
+        Builds the rotation matrix for given Euler angles (phi, theta, psi)
+        and rotation axis configuration.
 
-        Підтримувані конфігурації Tait-Bryan (всі осі різні):
+        Supported configurations Tait-Bryan (all axes different):
             XYZ, XZY, YXZ, YZX, ZXY, ZYX
-        Підтримувані власні кути Ейлера (перша та третя вісь однакові):
+        Supported proper Euler angles (first and third axes are the same):
             XYX, XZX, YXY, YZY, ZXZ, ZYZ
         """
         Rx = Mat4x4.rotation_x
@@ -279,7 +279,7 @@ class Mat4x4:
             return Rz(phi) * Rx(theta) * Ry(psi)
         elif configuration == Mat4x4.ZYX:
             return Rz(phi) * Ry(theta) * Rx(psi)
-        # --- Власні кути Ейлера ---
+        # --- Proper Euler angles ---
         elif configuration == Mat4x4.XYX:
             return Rx(phi) * Ry(theta) * Rx(psi)
         elif configuration == Mat4x4.XZX:
@@ -297,10 +297,10 @@ class Mat4x4:
 
     def toEuler(self, configuration=XYZ):
         """
-        Декомпозує матрицю обертання у кути Ейлера (phi, theta, psi)
-        для заданої конфігурації.
+        Decomposes the rotation matrix into Euler angles (phi, theta, psi)
+        for the given configuration.
 
-        Повертає кортеж (phi, theta, psi) у радіанах.
+        Returns a tuple (phi, theta, psi) in radians.
         """
         configuration = configuration.upper()
         # --- Tait-Bryan ---
@@ -316,7 +316,7 @@ class Mat4x4:
             return Mat4x4.toEulerZXY(self)
         elif configuration == Mat4x4.ZYX:
             return Mat4x4.toEulerZYX(self)
-        # --- Власні кути Ейлера ---
+        # --- Proper Euler angles ---
         elif configuration == Mat4x4.XYX:
             return Mat4x4.toEulerXYX(self)
         elif configuration == Mat4x4.XZX:
@@ -332,7 +332,7 @@ class Mat4x4:
         else:
             raise ValueError(Mat4x4.ERROR_MESSAGE_EULER_CONFIG_UNKNOWN)
 
-    # ── Tait-Bryan: декомпозиції ──────────────────────────────────────────────
+    # ── Tait-Bryan: decompositions ──────────────────────────────────────────────
 
     @staticmethod
     def toEulerXYZ(r):
@@ -382,7 +382,7 @@ class Mat4x4:
         psi   = np.arctan2( r[2, 1], r[2, 2])
         return float(phi), float(theta), float(psi)
 
-    # ── Власні кути Ейлера: декомпозиції ─────────────────────────────────────
+    # ── Proper Euler angles: decompositions ─────────────────────────────────────
 
     @staticmethod
     def toEulerZXZ(r):
@@ -460,7 +460,7 @@ class Mat4x4:
         return Mat4x4(m)
 
 
-# Приклад використання
+# Usage example
 if __name__ == "__main__":
     m = Mat4x4(1, 2, 3, 4,
                  5, 6, 7, 8,

@@ -6,23 +6,23 @@ from src.math.utils_matrix import is_orthogonal
 
 
 # ══════════════════════════════════════════════════════════════════════════════
-# Кути Ейлера ↔ Кватерніон
+# Euler Angles ↔ Quaternion
 # ══════════════════════════════════════════════════════════════════════════════
 
 def euler_to_quaternion(phi, theta, psi, configuration="XYZ"):
     """
-    Конвертує кути Ейлера (phi, theta, psi) у одиничний кватерніон для
-    заданої конфігурації осей обертання.
+    Converts Euler angles (phi, theta, psi) to a unit quaternion for
+    the given rotation axis configuration.
 
-    Підтримувані конфігурації Tait-Bryan: XYZ, XZY, YXZ, YZX, ZXY, ZYX
-    Підтримувані власні кути Ейлера:     XYX, XZX, YXY, YZY, ZXZ, ZYZ
+    Supported configurations Tait-Bryan: XYZ, XZY, YXZ, YZX, ZXY, ZYX
+    Supported proper Euler angles:       XYX, XZX, YXY, YZY, ZXZ, ZYZ
 
-    Параметри:
-        phi, theta, psi : кути у радіанах
-        configuration   : рядок з конфігурацією (реєстронечутливий)
+    Parameters:
+        phi, theta, psi : angles in radians
+        configuration   : configuration string (case-insensitive)
 
-    Повертає:
-        Quaternion — одиничний кватерніон обертання
+    Returns:
+        Quaternion — unit rotation quaternion
     """
     Qx = Quaternion.rotation_x
     Qy = Quaternion.rotation_y
@@ -44,16 +44,16 @@ def euler_to_quaternion(phi, theta, psi, configuration="XYZ"):
         "ZYZ": lambda p, t, s: Qz(p) * Qy(t) * Qz(s),
     }
     if cfg not in _map:
-        raise ValueError(f"Невідома конфігурація Ейлера: '{configuration}'")
+        raise ValueError(f"Unknown Euler configuration: '{configuration}'")
     return _map[cfg](phi, theta, psi)
 
 
 def euler_xyz_to_quaternion(phi, theta, psi):
     """
-    Конвертує кути Ейлера XYZ (phi, theta, psi) у одиничний кватерніон.
-    Еквівалентно до euler_to_quaternion(phi, theta, psi, "XYZ").
+    Converts Euler angles XYZ (phi, theta, psi) to a unit quaternion.
+    Equivalent to euler_to_quaternion(phi, theta, psi, "XYZ").
 
-    Використовує прямі аналітичні формули без проміжної матриці обертання.
+    Uses direct analytical formulas without an intermediate rotation matrix.
     """
     cp, sp = np.cos(phi / 2),   np.sin(phi / 2)
     ct, st = np.cos(theta / 2), np.sin(theta / 2)
@@ -69,15 +69,15 @@ def euler_xyz_to_quaternion(phi, theta, psi):
 
 def quaternion_to_euler(quat, configuration="XYZ"):
     """
-    Конвертує одиничний кватерніон у кути Ейлера (phi, theta, psi)
-    для заданої конфігурації осей обертання.
+    Converts a unit quaternion to Euler angles (phi, theta, psi)
+    для the given rotation axis configuration.
 
-    Параметри:
-        quat          : Quaternion — кватерніон обертання
-        configuration : рядок з конфігурацією (реєстронечутливий)
+    Parameters:
+        quat          : Quaternion — rotation quaternion
+        configuration : configuration string (case-insensitive)
 
-    Повертає:
-        (phi, theta, psi) — кути у радіанах
+    Returns:
+        (phi, theta, psi) — angles in radians
     """
     mat = quat.normalized().toRotationMatrix()
     return mat.toEuler(configuration)
@@ -85,18 +85,18 @@ def quaternion_to_euler(quat, configuration="XYZ"):
 
 def quaternion_to_euler_xyz(quat):
     """
-    Конвертує одиничний кватерніон у кути Ейлера XYZ (phi, theta, psi).
-    Використовує прямі аналітичні формули.
+    Converts a unit quaternion to Euler angles XYZ (phi, theta, psi).
+    Uses direct analytical formulas.
 
-    Повертає:
-        (phi, theta, psi) — кути у радіанах
+    Returns:
+        (phi, theta, psi) — angles in radians
     """
     q = quat.normalized()
     w, x, y, z = q.w, q.x, q.y, q.z
 
     # r[0,2] = 2(xz+wy)
     sin_theta = 2.0 * (w * y + x * z)
-    sin_theta = np.clip(sin_theta, -1.0, 1.0)  # захист від чисельних помилок
+    sin_theta = np.clip(sin_theta, -1.0, 1.0)  # guard against numerical errors
 
     theta = np.arcsin(sin_theta)
 
@@ -110,21 +110,21 @@ def quaternion_to_euler_xyz(quat):
 
 
 # ══════════════════════════════════════════════════════════════════════════════
-# Матриця обертання ↔ Кватерніон
+# Rotation Matrix ↔ Quaternion
 # ══════════════════════════════════════════════════════════════════════════════
 
 def rotation_matrix_to_quaternion(r):
     """
-    Конвертує матрицю обертання у одиничний кватерніон (алгоритм Shepperd).
+    Converts a rotation matrix to a unit quaternion (Shepperd algorithm).
 
-    Параметри:
-        r : ортонормована матриця обертання (Mat4x4, numpy.ndarray або сумісний тип)
+    Parameters:
+        r : orthonormal rotation matrix (Mat4x4, numpy.ndarray or compatible type)
 
-    Повертає:
-        Quaternion — одиничний кватерніон обертання
+    Returns:
+        Quaternion — unit rotation quaternion
     """
     if not is_orthogonal(r):
-        raise ValueError("Матриця обертання не є ортогональною!")
+        raise ValueError("Rotation matrix is not orthogonal!")
 
     r = Mat4x4(r)
     trace = r[0, 0] + r[1, 1] + r[2, 2]
@@ -155,65 +155,65 @@ def rotation_matrix_to_quaternion(r):
 
 def quaternion_to_rotation_matrix(quat):
     """
-    Конвертує одиничний кватерніон у матрицю обертання 4×4.
+    Converts a unit quaternion to a 4×4 rotation matrix.
 
-    Параметри:
-        quat : Quaternion — кватерніон обертання
+    Parameters:
+        quat : Quaternion — rotation quaternion
 
-    Повертає:
-        Mat4x4 — матриця обертання 4×4
+    Returns:
+        Mat4x4 — rotation matrix 4×4
     """
     return quat.normalized().toRotationMatrix()
 
 
 # ══════════════════════════════════════════════════════════════════════════════
-# Кут-вісь ↔ Кватерніон
+# Angle-Axis ↔ Quaternion
 # ══════════════════════════════════════════════════════════════════════════════
 
 def angle_axis_to_quaternion(angle, axis):
     """
-    Конвертує представлення обертання «кут-вісь» у кватерніон.
+    Converts the angle-axis rotation representation to a quaternion.
 
-    Параметри:
-        angle : кут обертання у радіанах
-        axis  : вісь обертання (Vec3, Vec4, list, tuple або numpy.ndarray розміром 3)
+    Parameters:
+        angle : rotation angle in radians
+        axis  : rotation axis (Vec3, Vec4, list, tuple or numpy.ndarray of size 3)
 
-    Повертає:
-        Quaternion — одиничний кватерніон обертання
+    Returns:
+        Quaternion — unit rotation quaternion
     """
     return Quaternion.rotation(angle, axis)
 
 
 def quaternion_to_angle_axis(quat):
     """
-    Конвертує кватерніон у представлення «кут-вісь».
+    Converts a quaternion to the angle-axis representation.
 
-    Параметри:
-        quat : Quaternion — кватерніон обертання
+    Parameters:
+        quat : Quaternion — rotation quaternion
 
-    Повертає:
-        (angle, axis) де angle у радіанах, axis — Vec3
+    Returns:
+        (angle, axis) where angle is in radians, axis is Vec3
     """
     return quat.normalized().to_angle_axis()
 
 
 # ══════════════════════════════════════════════════════════════════════════════
-# Інтерполяція кватерніонів
+# Quaternion interpolation
 # ══════════════════════════════════════════════════════════════════════════════
 
 def nlerp(q0: Quaternion, q1: Quaternion, t: float) -> Quaternion:
     """
-    Нормалізована лінійна інтерполяція (NLERP) між двома кватерніонами.
-    Швидша за SLERP, але не є рівномірною по швидкості.
+    Normalized linear interpolation (NLERP) between two quaternions.
+    Faster than SLERP but not constant-speed.
 
-    Параметри:
-        q0, q1 : Quaternion — початковий та кінцевий кватерніони
-        t      : float — параметр інтерполяції (0 ≤ t ≤ 1)
+    Parameters:
+        q0, q1 : Quaternion — start and end quaternions
+        t      : float — interpolation parameter (0 ≤ t ≤ 1)
 
-    Повертає:
-        Інтерпольований нормалізований кватерніон
+    Returns:
+        Interpolated normalized quaternion
     """
-    # Вибір короткого шляху (менше π)
+    # Choose short path (less than π)
     if quaternion_dot(q0, q1) < 0.0:
         q1 = -q1
     return (q0 * (1.0 - t) + q1 * t).normalized()
@@ -221,28 +221,28 @@ def nlerp(q0: Quaternion, q1: Quaternion, t: float) -> Quaternion:
 
 def slerp(q0: Quaternion, q1: Quaternion, t: float) -> Quaternion:
     """
-    Сферична лінійна інтерполяція (SLERP) між двома кватерніонами.
-    Рівномірна по куту, але повільніша за NLERP.
+    Spherical linear interpolation (SLERP) between two quaternions.
+    Constant angular speed, but slower than NLERP.
 
-    Параметри:
-        q0, q1 : Quaternion — початковий та кінцевий кватерніони
-        t      : float — параметр інтерполяції (0 ≤ t ≤ 1)
+    Parameters:
+        q0, q1 : Quaternion — start and end quaternions
+        t      : float — interpolation parameter (0 ≤ t ≤ 1)
 
-    Повертає:
-        Інтерпольований кватерніон Quaternion
+    Returns:
+        Interpolated Quaternion
     """
     dot = quaternion_dot(q0, q1)
 
-    # Вибір короткого шляху (менше π)
+    # Choose short path (less than π)
     if dot < 0.0:
         q1 = -q1
         dot = -dot
 
-    # Якщо кватерніони майже однакові — NLERP для стабільності
+    # If quaternions are nearly identical — use NLERP for stability
     if dot > 0.9995:
         return (q0 * (1.0 - t) + q1 * t).normalized()
 
-    theta_0 = np.arccos(dot)           # кут між кватерніонами
+    theta_0 = np.arccos(dot)           # angle between quaternions
     sin_theta_0 = np.sin(theta_0)
 
     s0 = np.sin((1.0 - t) * theta_0) / sin_theta_0
@@ -252,29 +252,29 @@ def slerp(q0: Quaternion, q1: Quaternion, t: float) -> Quaternion:
 
 
 # ══════════════════════════════════════════════════════════════════════════════
-# Допоміжні операції над кватерніонами
+# Auxiliary quaternion operations
 # ══════════════════════════════════════════════════════════════════════════════
 
 def quaternion_dot(q0: Quaternion, q1: Quaternion) -> float:
     """
-    Скалярний добуток двох кватерніонів (розглядає їх як 4D-вектори).
+    Dot product of two quaternions (treated as 4D vectors).
 
-    Повертає:
-        float — значення скалярного добутку
+    Returns:
+        float — dot product value
     """
     return float(np.dot(q0.q, q1.q))
 
 
 def are_same_rotation(q0: Quaternion, q1: Quaternion, atol: float = 1e-6) -> bool:
     """
-    Перевіряє, чи представляють два кватерніони однакове обертання.
-    Враховує подвійне покриття: q та -q задають одне й те саме обертання.
+    Checks whether two quaternions represent the same rotation.
+    Accounts for double cover: q and -q represent the same rotation.
 
-    Параметри:
-        q0, q1 : Quaternion — кватерніони для порівняння
-        atol   : допустима абсолютна похибка
+    Parameters:
+        q0, q1 : Quaternion — quaternions to compare
+        atol   : allowed absolute tolerance
 
-    Повертає:
+    Returns:
         bool
     """
     q0n = q0.normalized()
@@ -285,26 +285,26 @@ def are_same_rotation(q0: Quaternion, q1: Quaternion, atol: float = 1e-6) -> boo
 
 def angle_between_rotations(q0: Quaternion, q1: Quaternion) -> float:
     """
-    Обчислює кут (у радіанах) між двома обертаннями, заданими кватерніонами.
-    Геодезична відстань на SO(3).
+    Computes the angle (in radians) between two rotations given as quaternions.
+    Geodesic distance on SO(3).
 
-    Повертає:
-        float — кут у радіанах [0, π]
+    Returns:
+        float — angle in radians [0, π]
     """
     q0n = q0.normalized()
     q1n = q1.normalized()
-    # Відносне обертання: q_rel = q0^(-1) * q1
+    # Relative rotation: q_rel = q0^(-1) * q1
     q_rel = q0n.inverse() * q1n
-    # Кут = 2 * arccos(|w|)
+    # Angle = 2 * arccos(|w|)
     w = np.clip(abs(q_rel.w), 0.0, 1.0)
     return float(2.0 * np.arccos(w))
 
 
 def quaternion_identity() -> Quaternion:
     """
-    Повертає тривіальний (одиничний) кватерніон, що відповідає нульовому обертанню.
+    Returns the identity quaternion corresponding to zero rotation.
 
-    Повертає:
+    Returns:
         Quaternion(1, 0, 0, 0)
     """
     return Quaternion(1.0, 0.0, 0.0, 0.0)
@@ -312,20 +312,20 @@ def quaternion_identity() -> Quaternion:
 
 def is_unit_quaternion(quat: Quaternion, atol: float = 1e-6) -> bool:
     """
-    Перевіряє, чи є кватерніон одиничним (норма = 1).
+    Checks whether the quaternion is a unit quaternion (norm = 1).
 
-    Параметри:
+    Parameters:
         quat : Quaternion
-        atol : допустима абсолютна похибка
+        atol : allowed absolute tolerance
 
-    Повертає:
+    Returns:
         bool
     """
     return bool(np.isclose(quat.norm(), 1.0, atol=atol))
 
 
 # ══════════════════════════════════════════════════════════════════════════════
-# Приклад використання
+# Usage example
 # ══════════════════════════════════════════════════════════════════════════════
 
 if __name__ == '__main__':

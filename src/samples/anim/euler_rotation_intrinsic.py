@@ -95,7 +95,7 @@ if __name__ == '__main__':
 
 
     animated_scene = SimplePolygonScene(
-        axis_color=("#f00000", "#00f000", "#000088"),  # колір осей координат
+        axis_color=("#f00000", "#00f000", "#000088"),  # coordinate axis color
         axis_line_width=0.5,
     )
 

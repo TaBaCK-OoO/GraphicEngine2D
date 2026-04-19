@@ -68,7 +68,7 @@ class Scene(ABC):
         self.plt_axis.set_ylim([self.coordinate_rect[1], self.coordinate_rect[4]])
         self.plt_axis.set_zlim([self.coordinate_rect[2], self.coordinate_rect[5]])
 
-        # Вирівнювання масштабу осей
+        # Equalise axis scale
         self.plt_axis.set_box_aspect([1, 1, 1])
 
     def __setup_view(self):
@@ -81,14 +81,14 @@ class Scene(ABC):
         #                         roll=-25)
 
     def __setup_base_parameters(self):
-        # Відключення стандартних осей
+        # Disable default axes
         if not self.base_axis_show:
             self.plt_axis.axis('off')
 
         self.plt_axis.grid(self.grid_show)
 
     def __set_title(self):
-        # Назва графіка
+        # Plot title
         self.plt_axis.set_title(self.title)
 
     def __draw(self, name=None):

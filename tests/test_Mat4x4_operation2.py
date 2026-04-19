@@ -4,7 +4,7 @@ from src.math.Mat4x4 import Mat4x4
 from src.math.Vec3 import Vec3
 from src.math.Vec4 import Vec4
 
-# Матриця для перевірки
+# Matrix for testing
 IDENTITY = Mat4x4.identity()
 
 # 1. Множення Mat4x4 @ Mat4x4
@@ -46,7 +46,7 @@ def test_matmul_with_ndarray_4vec():
 
 # 6. Множення Mat4x4 @ np.ndarray неправильної форми → TypeError
 def test_matmul_with_ndarray_wrong_shape():
-    arr = np.array([1, 2, 3])  # лише 3 елементи
+    arr = np.array([1, 2, 3])  # only 3 elements
     with pytest.raises(TypeError):
         IDENTITY @ arr
 

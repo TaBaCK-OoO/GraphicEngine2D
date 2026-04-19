@@ -6,15 +6,15 @@ from src.math.utils_matrix import is_same_matrix
 
 def euler_xyz_rotation_matrix(phi, theta, psi):
     """
-    Генерує матрицю обертання на основі кутів Ейлера (XYZ конфігурація) без множення матриць.
+    Generates a rotation matrix from Euler angles (XYZ configuration) without matrix multiplication.
 
-    Вхід:
-    - phi: кут обертання навколо осі X
-    - theta: кут обертання навколо осі Y
-    - psi: кут обертання навколо осі Z
+    Input:
+    - phi: rotation angle around the X axis
+    - theta: rotation angle around the Y axis
+    - psi: rotation angle around the Z axis
 
-    Вихід:
-    - 3x3 матриця обертання
+    Output:
+    - 3x3 rotation matrix
     """
     cos_phi, sin_phi = np.cos(phi), np.sin(phi)
     cos_theta, sin_theta = np.cos(theta), np.sin(theta)

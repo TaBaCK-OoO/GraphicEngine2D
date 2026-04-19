@@ -12,7 +12,7 @@ from src.math.Rotations import get_rotation_angle
 
 def is_orthogonal(matrix, tol=1e-6):
     """
-    Перевіряє, чи є матриця ортогональною (R^T * R = I).
+    Checks whether the matrix is orthogonal (R^T * R = I).
     """
     matrix = Mat4x4(matrix)
     identity = Mat4x4()
@@ -22,7 +22,7 @@ def is_orthogonal(matrix, tol=1e-6):
 
 def is_same_matrix(matrix1, matrix2, tol=1e-6):
     """
-    Перевіряє чи дві матриці однакові
+    Checks whether two matrices are equal.
     """
     matrix1 = Mat4x4(matrix1)
     matrix2 = Mat4x4(matrix2)
@@ -39,21 +39,21 @@ def is_same_matrix(matrix1, matrix2, tol=1e-6):
 #         transition = transition.data
 #
 #     if transition.shape != (4, 4):
-#         raise ValueError("Матриця повинна бути розміром 4x4.")
+#         raise ValueError("Matrix must be 4x4.")
 #
-#     # Виділення переносу
+#     # Extract translation
 #     translation = transition[:3, 3]
 #
-#     # Виділення матриці RS
+#     # Extract RS matrix
 #     rs = transition[:3, :3]
 #
-#     # Обчислення масштабу
+#     # Compute scale
 #     scale_x = np.linalg.norm(rs[:, 0])
 #     scale_y = np.linalg.norm(rs[:, 1])
 #     scale_z = np.linalg.norm(rs[:, 2])
 #     scales = np.array([scale_x, scale_y, scale_z])
 #
-#     # Обчислення повороту
+#     # Compute rotation
 #     rotation = rs / scales
 #
 #     # # angle = get_rotation_angle(rotation)
@@ -61,11 +61,11 @@ def is_same_matrix(matrix1, matrix2, tol=1e-6):
 #     # return translation, rotation, scales
 #
 #
-#     # Полярна декомпозиція для коригування можливих викривлень
+#     # Polar decomposition to correct possible distortions
 #     U, _, Vt = np.linalg.svd(rotation)
-#     R = U @ Vt  # Чиста ортогональна матриця обертання
+#     R = U @ Vt  # Pure orthogonal rotation matrix
 #
-#     # Отримуємо вісь та кут повороту
+#     # Get rotation axis and angle
 #     rot = Rotation.from_matrix(R)
 #     axis, angle = rot.as_rotvec(), np.degrees(rot.magnitude())
 #
@@ -74,29 +74,29 @@ def is_same_matrix(matrix1, matrix2, tol=1e-6):
 
 def decompose_translation_quaternion_scale(T):
     """
-    Декомпозиція 4x4 матриці трансформації на компоненти:
-    - Translation (зміщення)
-    - Scale (розтяг)
-    - Rotation (обертання у вигляді кватерніона)
+    Decomposition of a 4x4 transformation matrix into components:
+    - Translation
+    - Scale
+    - Rotation (as quaternion)
 
-    Вхід: 4x4 матриця T
-    Вихід: translation, scale, quaternion
+    Input: 4x4 matrix T
+    Output: translation, scale, quaternion
     """
 
-    # 1. Витягнення зміщення (Translation)
+    # 1. Extract Translation
     translation = T[:3, 3]
 
-    # 2. Вилучення обертання та масштабування
-    M = T[:3, :3]  # Верхня ліва 3x3 підматриця (містить масштаб та обертання)
+    # 2. Extract rotation and scale
+    M = T[:3, :3]  # Upper-left 3x3 sub-matrix (contains scale and rotation)
 
-    # 3. Обчислення масштабу (Scale)
-    scale = np.linalg.norm(M, axis=0)  # Довжина кожного стовпця
+    # 3. Compute Scale
+    scale = np.linalg.norm(M, axis=0)  # Length of each column
 
-    # 4. Отримання матриці обертання (нормалізація)
-    R_matrix = M / scale  # Усунення впливу масштабу
+    # 4. Obtain rotation matrix (normalize)
+    R_matrix = M / scale  # Remove scale influence
 
-    # 5. Конвертація матриці обертання у кватерніон
-    quaternion = R.from_matrix(R_matrix).as_quat()  # Вихід: [x, y, z, w]
+    # 5. Convert rotation matrix to quaternion
+    quaternion = R.from_matrix(R_matrix).as_quat()  # Output: [x, y, z, w]
 
     quaternion = Quaternion(quaternion[3], *quaternion[:3])
 
@@ -105,25 +105,25 @@ def decompose_translation_quaternion_scale(T):
 
 def decompose_affine(matrix):
     """
-    Декомпозиція матриці 4x4 на трансляцію (T), масштабування (S) і обертання (R).
+    Decomposition of a 4x4 matrix into translation (T), scale (S) and rotation (R).
     """
-    # Виділяємо трансляцію (остній стовпець без останнього елемента)
+    # Extract translation (last column without last element)
     T = matrix[:3, 3]
 
-    # Виділяємо лінійне перетворення (верхня ліва 3x3 підматриця)
+    # Extract linear transformation (upper-left 3x3 sub-matrix)
     M = matrix[:3, :3]
 
-    # Отримуємо масштабування (довжини стовпців)
+    # Get scale (column lengths)
     S = np.linalg.norm(M, axis=0)
 
-    # Нормалізуємо M, щоб прибрати масштабування і отримати чисте обертання
-    R = M / S  # Ділимо кожен стовпець на відповідне значення масштабування
+    # Normalize M to remove scale and obtain pure rotation
+    R = M / S  # Divide each column by the corresponding scale value
 
-    # Полярна декомпозиція для коригування можливих викривлень
+    # Polar decomposition to correct possible distortions
     U, _, Vt = np.linalg.svd(R)
-    R = U @ Vt  # Чиста ортогональна матриця обертання
+    R = U @ Vt  # Pure orthogonal rotation matrix
 
-    # Отримуємо вісь та кут повороту
+    # Get rotation axis and angle
     rot = Rotation.from_matrix(R)
     # axis, angle = rot.as_rotvec(), np.degrees(rot.magnitude())
     axis, angle = rot.as_rotvec(), rot.magnitude()
@@ -139,20 +139,20 @@ def decompose_affine3(transition):
             transition = transition.data
 
         if transition.shape != (3, 3):
-            raise ValueError("Матриця повинна бути розміром 3x3.")
+            raise ValueError("Matrix must be 3x3.")
 
-        # Виділення переносу
+        # Extract translation
         translation = transition[:2, 2]
 
-        # Виділення матриці RS
+        # Extract RS matrix
         rs = transition[:2, :2]
 
-        # Обчислення масштабу
+        # Compute scale
         scale_x = np.linalg.norm(rs[:, 0])
         scale_y = np.linalg.norm(rs[:, 1])
         scales = np.array([scale_x, scale_y])
 
-        # Обчислення повороту
+        # Compute rotation
         rotation = rs / scales
 
         angle = get_rotation_angle(rotation)
@@ -161,40 +161,40 @@ def decompose_affine3(transition):
 
 def decompose_affine_2(matrix):
     """
-    Декомпозиція матриці 4x4 на трансляцію (T), масштабування (S) і обертання (R).
-    Також обчислює вісь та кут повороту.
+    Decomposition of a 4x4 matrix into translation (T), scale (S) and rotation (R).
+    Also computes rotation axis and angle.
     """
-    # Виділяємо трансляцію (останній стовпець без останнього елемента)
+    # Extract translation (last column without last element)
     T = matrix[:3, 3]
 
-    # Виділяємо лінійне перетворення (верхня ліва 3x3 підматриця)
+    # Extract linear transformation (upper-left 3x3 sub-matrix)
     M = matrix[:3, :3]
 
-    # Отримуємо масштабування (довжини стовпців)
+    # Get scale (column lengths)
     S = np.linalg.norm(M, axis=0)
 
-    # Нормалізуємо M, щоб прибрати масштабування і отримати чисте обертання
-    # Використовуємо захист від ділення на нуль, якщо масштаб дорівнює 0
+    # Normalize M to remove scale and obtain pure rotation
+    # Guard against division by zero if scale is 0
     R = M / S
 
-    # --- Отримуємо кут повороту ---
+    # --- Get rotation angle ---
     # cos(theta) = (Tr(R) - 1) / 2
     trace = R[0, 0] + R[1, 1] + R[2, 2]
     cos_theta = np.clip((trace - 1.0) / 2.0, -1.0, 1.0)
     angle = np.arccos(cos_theta)
 
-    # --- Отримуємо вісь обертання ---
+    # --- Get rotation axis ---
     if np.isclose(angle, 0.0):
-        # Випадок 0: Обертання відсутнє, вісь може бути будь-якою
+        # Case 0: No rotation, axis can be arbitrary
         axis = np.array([1.0, 0.0, 0.0])
 
     elif np.isclose(angle, np.pi):
-        # Випадок 180 градусів: sin(theta) = 0, метод різниці r_ij не працює.
-        # Шукаємо вісь через діагональні елементи.
+        # Case 180 degrees: sin(theta) = 0, the r_ij difference method does not work.
+        # Find axis via diagonal elements.
         diag = np.diag(R)
         axis = np.sqrt(np.maximum((diag + 1.0) / 2.0, 0.0))
 
-        # Визначаємо знаки компонентів осі за недіагональними елементами
+        # Determine signs of axis components from off-diagonal elements
         if R[0, 1] < 0: axis[1] = -axis[1]
         if R[0, 2] < 0: axis[2] = -axis[2]
         if R[1, 2] < 0 and axis[1] * axis[2] > 0: axis[2] = -axis[2]
@@ -202,14 +202,14 @@ def decompose_affine_2(matrix):
         axis = axis / np.linalg.norm(axis)
 
     else:
-        # Загальний випадок: використовуємо антисиметричну частину матриці
+        # General case: use antisymmetric part of the matrix
         # u = [r21 - r12, r02 - r20, r10 - r01]
         axis = np.array([
             R[2, 1] - R[1, 2],
             R[0, 2] - R[2, 0],
             R[1, 0] - R[0, 1]
         ])
-        # Нормалізуємо, щоб отримати одиничний вектор
+        # Normalize to get a unit vector
         axis = axis / np.linalg.norm(axis)
 
     return T, R, S, axis, angle

@@ -42,7 +42,7 @@ if __name__ == '__main__':
     def frame1(scene: Scene):
         rect: SimplePolygon = scene[RECT_KEY]
 
-        # rect.color = "blue"  # колір ліній
+        # rect.color = "blue"  # line color
         rect.alpha = 0.2
 
 
@@ -58,7 +58,7 @@ if __name__ == '__main__':
         R1 = Mat4x4.rotation(np.radians(-20), u)
         R = T * R1 * T1
 
-        rect.color = "blue"  # колір ліній
+        rect.color = "blue"  # line color
         rect.transformation = R
 
 
@@ -74,7 +74,7 @@ if __name__ == '__main__':
         R1 = Mat4x4.rotation(np.radians(90), u)
         R = T * R1 * T1
 
-        rect.color = "blue"  # колір ліній
+        rect.color = "blue"  # line color
         rect.transformation = R
 
 
@@ -90,7 +90,7 @@ if __name__ == '__main__':
         R1 = Mat4x4.rotation(np.radians(180), u)
         R = T * R1 * T1
 
-        rect.color = "blue"  # колір ліній
+        rect.color = "blue"  # line color
         rect.transformation = R
 
 
@@ -106,7 +106,7 @@ if __name__ == '__main__':
         R1 = Mat4x4.rotation(np.radians(230), u)
         R = T * R1 * T1
 
-        rect.color = "blue"  # колір ліній
+        rect.color = "blue"  # line color
         rect.transformation = R
 
 
@@ -120,6 +120,6 @@ if __name__ == '__main__':
         frame3,
         frame4,
         frame5,
-    )  # додаємо кадри на сцену
+    )  # add frames to the scene
 
     simple_scene.show()

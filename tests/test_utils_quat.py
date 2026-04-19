@@ -29,63 +29,63 @@ ALL_CONFIGS = [
 
 
 # ══════════════════════════════════════════════════════════════════════════════
-# Кути Ейлера → Кватерніон
+# Euler Angles → Quaternion
 # ══════════════════════════════════════════════════════════════════════════════
 
 class TestEulerToQuaternion:
 
     def test_xyz_direct_vs_generic(self):
-        """euler_xyz_to_quaternion та euler_to_quaternion('XYZ') дають однаковий результат."""
+        """euler_xyz_to_quaternion and euler_to_quaternion('XYZ') give identical result."""
         phi, theta, psi = np.radians((30, 45, 60))
         q_direct = euler_xyz_to_quaternion(phi, theta, psi)
         q_generic = euler_to_quaternion(phi, theta, psi, "XYZ")
         assert np.allclose(q_direct.q, q_generic.q, atol=1e-10)
 
     def test_zero_angles_give_identity(self):
-        """Кути (0,0,0) для будь-якої конфігурації дають одиничний кватерніон."""
+        """Angles (0,0,0) for any configuration give identity quaternion."""
         for cfg in ALL_CONFIGS:
             q = euler_to_quaternion(0.0, 0.0, 0.0, cfg)
             assert np.allclose(q.q, [1, 0, 0, 0], atol=1e-10), \
-                f"{cfg}: (0,0,0) має давати одиничний кватерніон"
+                f"{cfg}: (0,0,0) should give identity quaternion"
 
     def test_result_is_unit_quaternion(self):
-        """Результат euler_to_quaternion завжди є одиничним кватерніоном."""
+        """Result of euler_to_quaternion is always a unit quaternion."""
         angles = np.radians((30, 45, 60))
         for cfg in ALL_CONFIGS:
             q = euler_to_quaternion(*angles, cfg)
             assert is_unit_quaternion(q, atol=1e-6), \
-                f"{cfg}: результат має бути одиничним кватерніоном"
+                f"{cfg}: result must be a unit quaternion"
 
     def test_case_insensitive(self):
-        """Конфігурація реєстронечутлива."""
+        """Configuration is case-insensitive."""
         angles = np.radians((20, 35, 50))
         for cfg in ALL_CONFIGS:
             q_upper = euler_to_quaternion(*angles, cfg.upper())
             q_lower = euler_to_quaternion(*angles, cfg.lower())
             assert np.allclose(q_upper.q, q_lower.q, atol=1e-10), \
-                f"{cfg}: верхній і нижній регістр дають різні результати"
+                f"{cfg}: upper and lower case give different results"
 
     def test_invalid_configuration(self):
-        """Невідома конфігурація піднімає ValueError."""
+        """Unknown configuration raises ValueError."""
         with pytest.raises(ValueError):
             euler_to_quaternion(0.1, 0.2, 0.3, "ABC")
 
     def test_xyz_single_axis_x(self):
-        """XYZ з theta=psi=0: має відповідати Quaternion.rotation_x."""
+        """XYZ with theta=psi=0: should match Quaternion.rotation_x."""
         phi = np.radians(45)
         q_expected = Quaternion.rotation_x(phi)
         q = euler_to_quaternion(phi, 0.0, 0.0, "XYZ")
         assert are_same_rotation(q, q_expected)
 
     def test_xyz_single_axis_y(self):
-        """XYZ з phi=psi=0: має відповідати Quaternion.rotation_y."""
+        """XYZ with phi=psi=0: should match Quaternion.rotation_y."""
         theta = np.radians(45)
         q_expected = Quaternion.rotation_y(theta)
         q = euler_to_quaternion(0.0, theta, 0.0, "XYZ")
         assert are_same_rotation(q, q_expected)
 
     def test_xyz_single_axis_z(self):
-        """XYZ з phi=theta=0: має відповідати Quaternion.rotation_z."""
+        """XYZ with phi=theta=0: should match Quaternion.rotation_z."""
         psi = np.radians(45)
         q_expected = Quaternion.rotation_z(psi)
         q = euler_to_quaternion(0.0, 0.0, psi, "XYZ")
@@ -102,29 +102,29 @@ class TestEulerToQuaternion:
 
 
 # ══════════════════════════════════════════════════════════════════════════════
-# Кватерніон → Кути Ейлера (round-trip)
+# Quaternion → Euler Angles (round-trip)
 # ══════════════════════════════════════════════════════════════════════════════
 
 class TestQuaternionToEuler:
 
     def test_xyz_direct_vs_generic(self):
-        """quaternion_to_euler_xyz та quaternion_to_euler('XYZ') дають однаковий результат."""
+        """quaternion_to_euler_xyz and quaternion_to_euler('XYZ') give identical result."""
         q = euler_xyz_to_quaternion(*np.radians((30, 45, 60)))
         angles_direct = quaternion_to_euler_xyz(q)
         angles_generic = quaternion_to_euler(q, "XYZ")
         assert np.allclose(angles_direct, angles_generic, atol=1e-6)
 
     def test_roundtrip_all_configs(self):
-        """Round-trip euler→quaternion→euler для всіх конфігурацій."""
+        """Round-trip euler→quaternion→euler for all configurations."""
         angles_orig = np.radians((30, 45, 60))
         for cfg in ALL_CONFIGS:
             q = euler_to_quaternion(*angles_orig, cfg)
             recovered = quaternion_to_euler(q, cfg)
             assert np.allclose(np.degrees(recovered), np.degrees(angles_orig), atol=1e-5), \
-                f"{cfg}: round-trip кутів не вдався"
+                f"{cfg}: angle round-trip failed"
 
     def test_roundtrip_various_angles(self):
-        """Round-trip для різних кутів у XYZ."""
+        """Round-trip for various angles in XYZ."""
         test_angles = [
             (10, 20, 30),
             (-45, 30, 90),
@@ -137,18 +137,18 @@ class TestQuaternionToEuler:
             q = euler_xyz_to_quaternion(*angles)
             recovered = quaternion_to_euler_xyz(q)
             assert np.allclose(np.degrees(recovered), deg, atol=1e-5), \
-                f"Round-trip для {deg} не вдався"
+                f"Round-trip for {deg} failed"
 
     def test_identity_quaternion_gives_zero_angles(self):
-        """Одиничний кватерніон → (0, 0, 0) для всіх Tait-Bryan конфігурацій."""
+        """Identity quaternion → (0, 0, 0) for all Tait-Bryan configurations."""
         q = quaternion_identity()
         for cfg in ["XYZ", "XZY", "YXZ", "YZX", "ZXY", "ZYX"]:
             angles = quaternion_to_euler(q, cfg)
             assert np.allclose(angles, (0.0, 0.0, 0.0), atol=1e-10), \
-                f"{cfg}: одиничний кватерніон має давати (0,0,0)"
+                f"{cfg}: identity quaternion should give (0,0,0)"
 
     def test_negative_quaternion_same_rotation(self):
-        """q та -q задають одне й те саме обертання → однакові кути Ейлера."""
+        """q and -q represent the same rotation → identical Euler angles."""
         q = euler_xyz_to_quaternion(*np.radians((30, 45, 60)))
         angles_pos = quaternion_to_euler_xyz(q)
         angles_neg = quaternion_to_euler_xyz(-q)
@@ -156,13 +156,13 @@ class TestQuaternionToEuler:
 
 
 # ══════════════════════════════════════════════════════════════════════════════
-# Матриця обертання ↔ Кватерніон
+# Rotation Matrix ↔ Quaternion
 # ══════════════════════════════════════════════════════════════════════════════
 
 class TestRotationMatrixQuaternion:
 
     def test_matrix_to_quaternion_and_back(self):
-        """rotation_matrix → quaternion → rotation_matrix дає вихідну матрицю."""
+        """rotation_matrix → quaternion → rotation_matrix gives the original matrix."""
         phi, theta, psi = np.radians((30, 45, 60))
         mat = Mat4x4.rotation_euler(phi, theta, psi, "XYZ")
         q = rotation_matrix_to_quaternion(mat)
@@ -170,40 +170,40 @@ class TestRotationMatrixQuaternion:
         assert np.allclose(mat.data, mat_recovered.data, atol=1e-6)
 
     def test_quaternion_to_matrix_and_back(self):
-        """quaternion → rotation_matrix → quaternion дає вихідний кватерніон (з точністю до знаку)."""
+        """quaternion → rotation_matrix → quaternion gives original quaternion (up to sign)."""
         q = euler_to_quaternion(*np.radians((30, 45, 60)), "XYZ")
         mat = quaternion_to_rotation_matrix(q)
         q_recovered = rotation_matrix_to_quaternion(mat)
         assert are_same_rotation(q, q_recovered)
 
     def test_identity_matrix_gives_identity_quaternion(self):
-        """Одинична матриця → одиничний кватерніон."""
+        """Identity matrix → identity quaternion."""
         q = rotation_matrix_to_quaternion(Mat4x4.identity())
         assert are_same_rotation(q, quaternion_identity())
 
     def test_rotation_x_90(self):
-        """Rx(90°) дає кватерніон (cos45°, sin45°, 0, 0)."""
+        """Rx(90°) gives quaternion (cos45°, sin45°, 0, 0)."""
         mat = Mat4x4.rotation_x(np.radians(90))
         q = rotation_matrix_to_quaternion(mat)
         q_expected = Quaternion.rotation_x(np.radians(90))
         assert are_same_rotation(q, q_expected)
 
     def test_rotation_y_90(self):
-        """Ry(90°) дає кватерніон (cos45°, 0, sin45°, 0)."""
+        """Ry(90°) gives quaternion (cos45°, 0, sin45°, 0)."""
         mat = Mat4x4.rotation_y(np.radians(90))
         q = rotation_matrix_to_quaternion(mat)
         q_expected = Quaternion.rotation_y(np.radians(90))
         assert are_same_rotation(q, q_expected)
 
     def test_rotation_z_90(self):
-        """Rz(90°) дає кватерніон (cos45°, 0, 0, sin45°)."""
+        """Rz(90°) gives quaternion (cos45°, 0, 0, sin45°)."""
         mat = Mat4x4.rotation_z(np.radians(90))
         q = rotation_matrix_to_quaternion(mat)
         q_expected = Quaternion.rotation_z(np.radians(90))
         assert are_same_rotation(q, q_expected)
 
     def test_non_orthogonal_matrix_raises(self):
-        """Не-ортогональна матриця піднімає ValueError."""
+        """Non-orthogonal matrix raises ValueError."""
         bad_mat = Mat4x4(2, 0, 0, 0,
                          0, 1, 0, 0,
                          0, 0, 1, 0,
@@ -212,14 +212,14 @@ class TestRotationMatrixQuaternion:
             rotation_matrix_to_quaternion(bad_mat)
 
     def test_result_is_unit_quaternion(self):
-        """Результат rotation_matrix_to_quaternion завжди одиничний."""
+        """Result of rotation_matrix_to_quaternion is always a unit quaternion."""
         for angle_deg in [0, 30, 90, 180]:
             mat = Mat4x4.rotation_z(np.radians(angle_deg))
             q = rotation_matrix_to_quaternion(mat)
-            assert is_unit_quaternion(q), f"Не одиничний кватерніон для {angle_deg}°"
+            assert is_unit_quaternion(q), f"Not a unit quaternion for {angle_deg}°"
 
     def test_quaternion_to_matrix_is_rotation_matrix(self):
-        """quaternion_to_rotation_matrix дає ортогональну матрицю з det=1."""
+        """quaternion_to_rotation_matrix returns orthogonal matrix with det=1."""
         q = euler_to_quaternion(*np.radians((30, 45, 60)), "ZYX")
         mat = quaternion_to_rotation_matrix(q)
         r = mat.data[:3, :3]
@@ -228,34 +228,34 @@ class TestRotationMatrixQuaternion:
 
 
 # ══════════════════════════════════════════════════════════════════════════════
-# Кут-вісь ↔ Кватерніон
+# Angle-Axis ↔ Quaternion
 # ══════════════════════════════════════════════════════════════════════════════
 
 class TestAngleAxisQuaternion:
 
     def test_angle_axis_to_quaternion_x(self):
-        """angle_axis_to_quaternion для осі X = Quaternion.rotation_x."""
+        """angle_axis_to_quaternion for X axis = Quaternion.rotation_x."""
         angle = np.radians(60)
         q = angle_axis_to_quaternion(angle, [1, 0, 0])
         q_expected = Quaternion.rotation_x(angle)
         assert are_same_rotation(q, q_expected)
 
     def test_angle_axis_to_quaternion_y(self):
-        """angle_axis_to_quaternion для осі Y = Quaternion.rotation_y."""
+        """angle_axis_to_quaternion for Y axis = Quaternion.rotation_y."""
         angle = np.radians(90)
         q = angle_axis_to_quaternion(angle, [0, 1, 0])
         q_expected = Quaternion.rotation_y(angle)
         assert are_same_rotation(q, q_expected)
 
     def test_angle_axis_to_quaternion_z(self):
-        """angle_axis_to_quaternion для осі Z = Quaternion.rotation_z."""
+        """angle_axis_to_quaternion for Z axis = Quaternion.rotation_z."""
         angle = np.radians(45)
         q = angle_axis_to_quaternion(angle, [0, 0, 1])
         q_expected = Quaternion.rotation_z(angle)
         assert are_same_rotation(q, q_expected)
 
     def test_roundtrip_angle_axis(self):
-        """angle_axis → quaternion → angle_axis дає вихідні значення."""
+        """angle_axis → quaternion → angle_axis gives original values."""
         angle_orig = np.radians(75)
         axis_orig = Vec3(1, 2, 3).normalized()
         q = angle_axis_to_quaternion(angle_orig, axis_orig)
@@ -264,14 +264,14 @@ class TestAngleAxisQuaternion:
         assert np.allclose(axis_rec.data[:3], axis_orig.data[:3], atol=1e-6)
 
     def test_zero_angle_gives_identity(self):
-        """Кут 0 → одиничний кватерніон незалежно від осі."""
+        """Angle 0 → identity quaternion regardless of axis."""
         q = angle_axis_to_quaternion(0.0, [1, 0, 0])
         assert are_same_rotation(q, quaternion_identity())
 
     def test_rotation_consistency_with_matrix(self):
-        """angle_axis кватерніон та матриця Mat4x4.rotation дають однакове обертання."""
+        """angle_axis quaternion and Mat4x4.rotation matrix give identical rotation."""
         angle = np.radians(70)
-        axis = [1, 1, 0]  # не нормалізована — обидва методи нормалізують
+        axis = [1, 1, 0]  # not normalized — both methods normalize it
         q = angle_axis_to_quaternion(angle, axis)
         mat_from_q = quaternion_to_rotation_matrix(q)
         mat_direct = Mat4x4.rotation(angle, axis)
@@ -299,7 +299,7 @@ class TestSlerp:
         assert are_same_rotation(result, q1)
 
     def test_slerp_t05_midpoint(self):
-        """slerp(q0, q1, 0.5) дає кватерніон посередині (кут = середньому)."""
+        """slerp(q0, q1, 0.5) gives midpoint quaternion (angle = midpoint)."""
         phi0, phi1 = np.radians(20), np.radians(80)
         q0 = Quaternion.rotation_y(phi0)
         q1 = Quaternion.rotation_y(phi1)
@@ -308,24 +308,24 @@ class TestSlerp:
         assert are_same_rotation(q_mid, q_expected)
 
     def test_slerp_result_is_unit_quaternion(self):
-        """slerp завжди повертає одиничний кватерніон."""
+        """slerp always returns a unit quaternion."""
         q0 = euler_to_quaternion(*np.radians((10, 20, 30)), "XYZ")
         q1 = euler_to_quaternion(*np.radians((60, 45, 90)), "XYZ")
         for t in [0.0, 0.25, 0.5, 0.75, 1.0]:
             q = slerp(q0, q1, t)
-            assert is_unit_quaternion(q, atol=1e-6), f"slerp(t={t}) не є одиничним"
+            assert is_unit_quaternion(q, atol=1e-6), f"slerp(t={t}) is not a unit quaternion"
 
     def test_slerp_short_path(self):
-        """slerp обирає короткий шлях між протилежними кватерніонами."""
+        """slerp takes the short path between opposite quaternions."""
         q0 = Quaternion.rotation_y(np.radians(10))
-        q1_neg = -Quaternion.rotation_y(np.radians(20))  # той самий кватерніон, інший знак
+        q1_neg = -Quaternion.rotation_y(np.radians(20))  # same quaternion, different sign
         q1_pos = Quaternion.rotation_y(np.radians(20))
         angle_neg = angle_between_rotations(slerp(q0, q1_neg, 0.5), q0)
         angle_pos = angle_between_rotations(slerp(q0, q1_pos, 0.5), q0)
         assert np.isclose(angle_neg, angle_pos, atol=1e-5)
 
     def test_slerp_nearly_identical_quaternions(self):
-        """slerp стабільний для майже однакових кватерніонів (dot ≈ 1)."""
+        """slerp is stable for nearly identical quaternions (dot ≈ 1)."""
         q0 = Quaternion.rotation_z(np.radians(45))
         q1 = Quaternion.rotation_z(np.radians(45.0001))
         result = slerp(q0, q1, 0.5)
@@ -351,15 +351,15 @@ class TestNlerp:
         assert are_same_rotation(nlerp(q0, q1, 1.0), q1)
 
     def test_nlerp_result_is_unit_quaternion(self):
-        """nlerp завжди повертає одиничний кватерніон."""
+        """nlerp always returns a unit quaternion."""
         q0 = euler_to_quaternion(*np.radians((10, 20, 30)), "ZYX")
         q1 = euler_to_quaternion(*np.radians((60, 45, 90)), "ZYX")
         for t in [0.0, 0.25, 0.5, 0.75, 1.0]:
             q = nlerp(q0, q1, t)
-            assert is_unit_quaternion(q, atol=1e-6), f"nlerp(t={t}) не є одиничним"
+            assert is_unit_quaternion(q, atol=1e-6), f"nlerp(t={t}) is not a unit quaternion"
 
     def test_nlerp_short_path(self):
-        """nlerp обирає короткий шлях між протилежними кватерніонами."""
+        """nlerp takes the short path between opposite quaternions."""
         q0 = Quaternion.rotation_y(np.radians(10))
         q1_neg = -Quaternion.rotation_y(np.radians(20))
         q1_pos = Quaternion.rotation_y(np.radians(20))
@@ -369,56 +369,56 @@ class TestNlerp:
 
 
 # ══════════════════════════════════════════════════════════════════════════════
-# Допоміжні функції
+# Helper functions
 # ══════════════════════════════════════════════════════════════════════════════
 
 class TestHelpers:
 
     def test_quaternion_dot_identical(self):
-        """Скалярний добуток одиничного кватерніона сам з собою = 1."""
+        """Dot product of unit quaternion with itself = 1."""
         q = euler_to_quaternion(*np.radians((30, 45, 60)), "XYZ")
         assert np.isclose(quaternion_dot(q, q), 1.0, atol=1e-6)
 
     def test_quaternion_dot_opposite(self):
-        """Скалярний добуток q та -q = -1."""
+        """Dot product of q and -q = -1."""
         q = Quaternion.rotation_x(np.radians(45))
         assert np.isclose(quaternion_dot(q, -q), -1.0, atol=1e-6)
 
     def test_are_same_rotation_identical(self):
-        """Однакові кватерніони → True."""
+        """Identical quaternions → True."""
         q = Quaternion.rotation_y(np.radians(60))
         assert are_same_rotation(q, q)
 
     def test_are_same_rotation_negative(self):
-        """q та -q → True (подвійне покриття SO(3))."""
+        """q and -q → True (double cover of SO(3))."""
         q = Quaternion.rotation_z(np.radians(45))
         assert are_same_rotation(q, -q)
 
     def test_are_same_rotation_different(self):
-        """Різні обертання → False."""
+        """Different rotations → False."""
         q0 = Quaternion.rotation_x(np.radians(30))
         q1 = Quaternion.rotation_x(np.radians(90))
         assert not are_same_rotation(q0, q1)
 
     def test_angle_between_rotations_same(self):
-        """Кут між однаковими обертаннями = 0."""
+        """Angle between identical rotations = 0."""
         q = Quaternion.rotation_z(np.radians(45))
         assert np.isclose(angle_between_rotations(q, q), 0.0, atol=1e-6)
 
     def test_angle_between_rotations_90deg(self):
-        """Кут між Ry(0°) та Ry(90°) = 90°."""
+        """Angle between Ry(0°) and Ry(90°) = 90°."""
         q0 = quaternion_identity()
         q1 = Quaternion.rotation_y(np.radians(90))
         angle = angle_between_rotations(q0, q1)
         assert np.isclose(np.degrees(angle), 90.0, atol=1e-4)
 
     def test_angle_between_rotations_opposite_sign(self):
-        """q та -q мають кут 0 між собою (одне й те саме обертання)."""
+        """q and -q have angle 0 between them (same rotation)."""
         q = Quaternion.rotation_x(np.radians(60))
         assert np.isclose(angle_between_rotations(q, -q), 0.0, atol=1e-6)
 
     def test_angle_between_rotations_symmetry(self):
-        """angle_between_rotations симетрична."""
+        """angle_between_rotations is symmetric."""
         q0 = Quaternion.rotation_y(np.radians(30))
         q1 = Quaternion.rotation_z(np.radians(60))
         assert np.isclose(
@@ -428,43 +428,43 @@ class TestHelpers:
         )
 
     def test_quaternion_identity_is_unit(self):
-        """quaternion_identity() є одиничним."""
+        """quaternion_identity() is a unit quaternion."""
         assert is_unit_quaternion(quaternion_identity())
 
     def test_is_unit_quaternion_true(self):
-        """Нормалізований кватерніон — одиничний."""
+        """Normalized quaternion is a unit quaternion."""
         q = Quaternion(1, 2, 3, 4).normalized()
         assert is_unit_quaternion(q)
 
     def test_is_unit_quaternion_false(self):
-        """Ненормалізований кватерніон — не одиничний."""
-        q = Quaternion(1, 2, 3, 4)  # норма > 1
+        """Non-normalized quaternion is not a unit quaternion."""
+        q = Quaternion(1, 2, 3, 4)  # norm > 1
         assert not is_unit_quaternion(q)
 
     def test_quaternion_identity_no_rotation(self):
-        """quaternion_identity() → нульовий кут обертання."""
+        """quaternion_identity() → zero rotation angle."""
         angle, _ = quaternion_to_angle_axis(quaternion_identity())
         assert np.isclose(angle, 0.0, atol=1e-6)
 
 
 # ══════════════════════════════════════════════════════════════════════════════
-# Інтеграційні тести (euler → quaternion → matrix узгоджені)
+# Integration tests (euler → quaternion → matrix consistency)
 # ══════════════════════════════════════════════════════════════════════════════
 
 class TestIntegration:
 
     def test_euler_quat_matrix_consistency(self):
-        """Матриці обертання, отримані через кватерніон та напряму, збігаються."""
+        """Rotation matrices obtained via quaternion and directly coincide."""
         angles = np.radians((30, 45, 60))
         for cfg in ALL_CONFIGS:
             mat_direct = Mat4x4.rotation_euler(*angles, configuration=cfg)
             q = euler_to_quaternion(*angles, cfg)
             mat_via_quat = quaternion_to_rotation_matrix(q)
             assert np.allclose(mat_direct.data, mat_via_quat.data, atol=1e-6), \
-                f"{cfg}: матриці через кватерніон та напряму відрізняються"
+                f"{cfg}: matrices via quaternion and directly differ"
 
     def test_rotate_vector_quaternion_vs_matrix(self):
-        """Поворот вектора через кватерніон та матрицю дає однаковий результат."""
+        """Vector rotation via quaternion and matrix gives identical result."""
         phi, theta, psi = np.radians((30, 45, 60))
         q = euler_xyz_to_quaternion(phi, theta, psi)
         mat = Mat4x4.rotation_euler(phi, theta, psi, "XYZ")
@@ -476,7 +476,7 @@ class TestIntegration:
         assert np.allclose(v_quat.data[:3], v_mat.data[:3], atol=1e-6)
 
     def test_composition_euler_via_quaternions(self):
-        """Послідовне застосування двох обертань через кватерніони = матриця добутку."""
+        """Sequential application of two rotations via quaternions = product matrix."""
         phi, theta = np.radians(45), np.radians(30)
         q1 = Quaternion.rotation_x(phi)
         q2 = Quaternion.rotation_y(theta)
@@ -490,7 +490,7 @@ class TestIntegration:
         assert np.allclose(mat_from_q.data, mat_composed.data, atol=1e-6)
 
     def test_slerp_endpoints_match_euler(self):
-        """SLERP кінцеві точки відповідають кватерніонам, побудованим з кутів Ейлера."""
+        """SLERP endpoints match quaternions built from Euler angles."""
         q0 = euler_to_quaternion(*np.radians((10, 20, 30)), "ZYX")
         q1 = euler_to_quaternion(*np.radians((60, 45, 90)), "ZYX")
         assert are_same_rotation(slerp(q0, q1, 0.0), q0)

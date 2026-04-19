@@ -26,12 +26,12 @@ class CoordinateFrame(BaseModel):
             if isinstance(color, str):
                 self.color = (color, color, color)
             elif isinstance(color, (tuple, list)) and len(color) == 3:
-                self.color = tuple(color)  # колір осей координат
+                self.color = tuple(color)  # coordinate axis color
 
         if line_width is not None:
-            self.line_width = line_width  # товщина осей координат
+            self.line_width = line_width  # coordinate axis width
         if line_style is not None:
-            self.line_style = line_style  # стиль ліній осей координат
+            self.line_style = line_style  # coordinate axis line style
 
     def draw_model(self):
         transformed_geometry = self.transformed_geometry

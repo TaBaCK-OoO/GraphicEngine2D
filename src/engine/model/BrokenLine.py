@@ -59,6 +59,6 @@ if __name__ == '__main__':
 
     simple_scene.add_frames(
         frame1,
-    )  # додаємо кадри на сцену
+    )  # add frames to the scene
 
     simple_scene.show()

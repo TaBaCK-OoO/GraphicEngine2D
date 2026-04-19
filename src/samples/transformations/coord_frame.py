@@ -20,7 +20,7 @@ if __name__ == '__main__':
     ############## Frame 1 ##################
     def frame1(scene: Scene):
         rect: CoordinateFrame = scene[RECT_KEY]
-        rect.line_style = "--"  # стиль ліній
+        rect.line_style = "--"  # line style
 
 
     ##############################################
@@ -54,13 +54,13 @@ if __name__ == '__main__':
 
 
     simple_scene = CoordinateFrameScene(
-        axis_color="grey",  # колір осей координат
+        axis_color="grey",  # coordinate axis color
     )
 
     simple_scene.add_frames(
         frame1,
         frame2,
         frame3,
-    )  # додаємо кадри на сцену
+    )  # add frames to the scene
 
     simple_scene.show()

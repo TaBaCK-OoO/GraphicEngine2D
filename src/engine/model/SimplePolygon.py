@@ -69,8 +69,8 @@ if __name__ == '__main__':
     def frame1(scene: Scene):
         rect: SimplePolygon = scene[RECT_KEY]
 
-        rect.color = "blue"  # колір ліній
-        rect.line_style = "--"  # стиль ліній
+        rect.color = "blue"  # line color
+        rect.line_style = "--"  # line style
         rect.alpha = 0.3
 
         # T = Mat4x4.translation(1, 1, 1)
@@ -97,7 +97,7 @@ if __name__ == '__main__':
         # R = Rx * Rz
         S = Mat4x4.scale(2)
 
-        rect.color = "yellow"  # колір ліній
+        rect.color = "yellow"  # line color
         rect.alpha = 1.0
         rect.transformation = (T * R * S)
 
@@ -112,15 +112,15 @@ if __name__ == '__main__':
 
 
     simple_scene = SimplePolygonScene(
-        coordinate_rect=(-1, -1, -1, 2, 2, 2),  # розмірність системи координатps
-        axis_color="grey",  # колір осей координат
-        axis_line_style="-."  # стиль ліній осей координат
+        coordinate_rect=(-1, -1, -1, 2, 2, 2),  # coordinate system dimensions
+        axis_color="grey",  # coordinate axis color
+        axis_line_style="-."  # coordinate axis line style
     )
 
     simple_scene.add_frames(
         frame1,
         frame2,
         frame3,
-    )  # додаємо кадри на сцену
+    )  # add frames to the scene
 
     simple_scene.show()

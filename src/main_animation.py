@@ -35,9 +35,9 @@ class AnimScene(AnimatedScene):
 
 if __name__ == '__main__':
     animated_scene = AnimScene(
-        title="",  # заголовок рисунка
-        image_size=(10, 10),  # розмір зображення: 1 - 100 пікселів
-        coordinate_rect=(-1, -1, -1, 1, 1, 1),  # розмірність системи координат
+        title="",  # figure title
+        image_size=(10, 10),  # image size: 1 - 100 pixels
+        coordinate_rect=(-1, -1, -1, 1, 1, 1),  # coordinate system dimensions
     )
 
     animated_scene.add_animations(

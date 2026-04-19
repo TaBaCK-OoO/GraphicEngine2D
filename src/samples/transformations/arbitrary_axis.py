@@ -35,7 +35,7 @@ if __name__ == '__main__':
     def frame1(scene: Scene):
         rect: SimplePolygon = scene[RECT_KEY]
 
-        # rect.color = "blue"  # колір ліній
+        # rect.color = "blue"  # line color
         rect.alpha = 0.2
 
 
@@ -159,14 +159,14 @@ if __name__ == '__main__':
 
 
     simple_scene = SimplePolygonScene(
-        image_size=(5, 5),  # розмір зображення: 1 - 100 пікселів
-        coordinate_rect=(-1, -1, -1, 2, 2, 2),  # розмірність системи координатps
-        title="Picture",  # заголовок рисунка
-        grid_show=False,  # чи показувати координатну сітку
-        base_axis_show=False,  # чи показувати базові осі зображення
-        axis_show=True,  # чи показувати осі координат
-        # axis_color="grey",  # колір осей координат
-        axis_line_style="-."  # стиль ліній осей координат
+        image_size=(5, 5),  # image size: 1 - 100 pixels
+        coordinate_rect=(-1, -1, -1, 2, 2, 2),  # coordinate system dimensionsps
+        title="Picture",  # figure title
+        grid_show=False,  # whether to show the coordinate grid
+        base_axis_show=False,  # whether to show base image axes
+        axis_show=True,  # whether to show coordinate axes
+        # axis_color="grey",  # coordinate axis color
+        axis_line_style="-."  # coordinate axis line style
     )
 
     simple_scene.add_frames(
@@ -176,6 +176,6 @@ if __name__ == '__main__':
         frame4,
         frame5,
         frame6,
-    )  # додаємо кадри на сцену
+    )  # add frames to the scene
 
     simple_scene.show()

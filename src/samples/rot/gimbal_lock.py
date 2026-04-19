@@ -57,9 +57,9 @@ if __name__ == '__main__':
     FIGURE_KEY = "polygon"
 
     sceneVector = VectorScene(
-        coordinate_rect=(-1, -1, -1, 3, 3, 3),  # розмірність системи координат
-        title="3D система координат",  # заголовок рисунка
-        axis_line_style="--",  # стиль ліній осей координат
+        coordinate_rect=(-1, -1, -1, 3, 3, 3),  # coordinate system dimensions
+        title="3D coordinate system",  # figure title
+        axis_line_style="--",  # coordinate axis line style
     )
 
     sceneVector.add_frames(frame0, frame1)

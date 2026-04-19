@@ -73,9 +73,9 @@ if __name__ == '__main__':
 
 
     simple_scene = SimplePolygonScene(
-        axis_color=("#f00000", "#00f000", "#000088"),  # колір осей координат
+        axis_color=("#f00000", "#00f000", "#000088"),  # coordinate axis color
         axis_line_width=0.5,
-        axis_line_style="-."  # стиль ліній осей координат
+        axis_line_style="-."  # coordinate axis line style
     )
 
     simple_scene.add_frames(
@@ -85,7 +85,7 @@ if __name__ == '__main__':
         # frame4,
         # frame5,
         # frame6,
-    )  # додаємо кадри на сцену
+    )  # add frames to the scene
 
     simple_scene.add_frames(frame1)
     simple_scene.show()

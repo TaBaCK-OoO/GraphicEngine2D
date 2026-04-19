@@ -26,7 +26,7 @@ def check(R):
 
 
 if __name__ == '__main__':
-    # Приклад використання
+    # Usage example
     Rx = Mat4x4.rotation_x(np.radians(30))
     Ry = Mat4x4.rotation_y(np.radians(40))
     Rz = Mat4x4.rotation_z(np.radians(45))

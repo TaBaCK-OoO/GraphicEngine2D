@@ -63,7 +63,7 @@ def test_matrix_from_three_vec3():
     mat = Mat3x3(row1, row2, row3)
     expected = np.array([[1, 2, 3], [4, 5, 6], [7, 8, 9]], dtype=float)
 
-    assert np.allclose(mat.data, expected), "Помилка в створенні матриці з трьох Vec3"
+    assert np.allclose(mat.data, expected), "Error creating matrix from three Vec3"
 
 
 
