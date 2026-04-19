@@ -37,7 +37,7 @@ class VectorScene(Scene):
         super().__init__(**kwargs)
 
 
-        vector = Vector(self.plt_axis,
+        vector = Vector(
                         0, 0, 0,
                         1, 0, 1
                         )
@@ -45,7 +45,7 @@ class VectorScene(Scene):
         vector.color = "brown"
         vector.linewidth=2.0
 
-        vector2 = Vector(self.plt_axis,
+        vector2 = Vector(
                         0, 0, 0,
                          1, 0, 1
                         )

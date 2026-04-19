@@ -5,13 +5,13 @@ from src.engine.scene.Scene import Scene
 
 class Vector(Model):
 
-    def __init__(self, plt_axis,
+    def __init__(self,
                  *vertices,
                  color="grey",
                  linestyle="-",
                  linewidth=1.0,
                  ):
-        super().__init__(plt_axis, *vertices, color=color)
+        super().__init__(*vertices, color=color)
 
         self.linestyle = linestyle
         self.linewidth = linewidth
@@ -36,7 +36,7 @@ if __name__ == '__main__':
 
         def __init__(self, **kwargs):
             super().__init__(**kwargs)
-            self[VECT_KEY] = Vector(self.plt_axis,
+            self[VECT_KEY] = Vector(
                             0, 0, 0,
                             0.557, 0.500, 0.663,
                             color="brown"
