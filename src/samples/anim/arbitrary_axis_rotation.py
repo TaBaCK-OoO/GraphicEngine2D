@@ -19,7 +19,7 @@ if __name__ == '__main__':
         def __init__(self, **kwargs):
             super().__init__(**kwargs)
 
-            polygon = SimplePolygon(self.plt_axis,
+            polygon = SimplePolygon(
                                     O,
                                     O + ax,
                                     O + t,
@@ -29,7 +29,6 @@ if __name__ == '__main__':
             # polygon.show_local_frame()
 
             vector = Vector(
-                self.plt_axis,
                 O,
                 O + ax,
             )

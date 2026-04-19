@@ -62,7 +62,7 @@ if __name__ == '__main__':
         def __init__(self, **kwargs):
             super().__init__(**kwargs)
 
-            polygon = SimplePolygon(self.plt_axis,
+            polygon = SimplePolygon(
                                     O,
                                     O + t1,
                                     O + t2,
@@ -71,7 +71,7 @@ if __name__ == '__main__':
             self[RECT_KEY] = polygon
             polygon.show_local_frame()
 
-            polygon0 = SimplePolygon(self.plt_axis,
+            polygon0 = SimplePolygon(
                                      O,
                                      O + t1,
                                      O + t2,

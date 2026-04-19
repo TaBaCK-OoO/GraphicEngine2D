@@ -6,14 +6,13 @@ from src.engine.scene.Scene import Scene
 class Cube(Model):
 
     def __init__(self,
-                 plt_axis,
                  alpha=1.0,
                  color="cyan",
                  edge_color="blue",
                  line_style="-",
                  line_width=1.0,
                  ):
-        super().__init__(plt_axis)
+        super().__init__()
         self.polygons = []
 
         # cube vertices
@@ -40,7 +39,7 @@ class Cube(Model):
 
         for i, face in enumerate(faces):
             self.polygons.append(
-                SimplePolygon(self.plt_axis,
+                SimplePolygon(
                               *face,
                               color=color,
                               edgecolor=edge_color,
@@ -49,11 +48,11 @@ class Cube(Model):
                               line_style=line_style,
                               ))
 
-    def draw_model(self):
+    def draw_model(self, plt_axis):
         for polygon in self.polygons:
             polygon.transformation = self.transformation
             polygon.pivot(self._pivot)
-            polygon.draw()
+            polygon.draw(plt_axis)
 
     def apply_transformation_to_geometry(self):
         super().apply_transformation_to_geometry()
@@ -70,7 +69,7 @@ if __name__ == '__main__':
 
         def __init__(self, **kwargs):
             super().__init__(**kwargs)
-            cube = Cube(self.plt_axis, alpha=0.1)
+            cube = Cube(alpha=0.1)
             self[CUBE_KEY] = cube
             cube.show_pivot()
             cube.show_local_frame()

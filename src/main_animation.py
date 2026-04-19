@@ -27,9 +27,10 @@ class AnimScene(AnimatedScene):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
 
-        cube = Cube(self.plt_axis, alpha=0.1)
+        cube = Cube(alpha=0.1)
         self[CUBE_KEY] = cube
         cube.show_pivot()
+        cube.pivot(0.5, 0.5, 0.5)
         cube.show_local_frame()
 
 

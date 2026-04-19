@@ -54,19 +54,19 @@ class AnimScene(AnimatedScene):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
 
-        cube = Cube(self.plt_axis, alpha=0.1)
+        cube = Cube( alpha=0.1)
         self[CUBE_KEY] = cube
         cube.show_pivot()
         cube.show_local_frame()
 
-        cube = Cube(self.plt_axis, alpha=0.1,
+        cube = Cube( alpha=0.1,
                     color="grey",
                     edge_color="red", )
         self[CUBE1_KEY] = cube
         cube.show_pivot()
         cube.show_local_frame()
 
-        cube = Cube(self.plt_axis, alpha=0.1,
+        cube = Cube( alpha=0.1,
                     color="yellow",
                     edge_color="black", )
         self[CUBE2_KEY] = cube

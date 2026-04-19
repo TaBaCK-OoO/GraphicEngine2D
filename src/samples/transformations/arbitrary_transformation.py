@@ -16,7 +16,7 @@ if __name__ == '__main__':
         def __init__(self, **kwargs):
             super().__init__(**kwargs)
 
-            polygon = SimplePolygon(self.plt_axis,
+            polygon = SimplePolygon(
                                     O,
                                     O + t1,
                                     O + t2,

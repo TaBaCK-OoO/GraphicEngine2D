@@ -10,9 +10,7 @@ from src.math.utils_matrix import decompose_translation_quaternion_scale, is_ort
 
 class BaseModel(metaclass=ABCMeta):
 
-    def __init__(self, plt_axis, *vertices):
-        self.plt_axis = plt_axis
-
+    def __init__(self, *vertices):
         self._pivot = vertex()
         self._geometry = self.build_geometry(*vertices)
         self._transformation = Mat4x4()
@@ -113,9 +111,9 @@ class BaseModel(metaclass=ABCMeta):
         else:
             self._pivot = Vec4(tx, ty, tz, 1)
 
-    def draw(self):
-        self.draw_model()
+    def draw(self, plt_axis):
+        self.draw_model(plt_axis)
 
     @abstractmethod
-    def draw_model(self):
+    def draw_model(self, plt_axis):
         pass

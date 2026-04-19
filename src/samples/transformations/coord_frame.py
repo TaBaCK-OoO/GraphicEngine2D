@@ -12,8 +12,7 @@ if __name__ == '__main__':
 
         def __init__(self, **kwargs):
             super().__init__(**kwargs)
-            coord_frame = CoordinateFrame(self.plt_axis,
-                                          )
+            coord_frame = CoordinateFrame()
             self[RECT_KEY] = coord_frame
 
 

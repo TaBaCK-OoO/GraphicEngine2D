@@ -15,7 +15,7 @@ if __name__ == '__main__':
         def __init__(self, **kwargs):
             super().__init__(**kwargs)
 
-            polygon = SimplePolygon(self.plt_axis,
+            polygon = SimplePolygon(
                                     1, 1, 1,
                                     1 + 0.557, 1 + 0.500, 1 + 0.663,
                                     1, 1 + 1, 1,
@@ -23,7 +23,7 @@ if __name__ == '__main__':
                                     )
             self[RECT_KEY] = polygon
 
-            vector = Vector(self.plt_axis,
+            vector = Vector(
                             1, 1, 1,
                             1 + 0.557, 1 + 0.500, 1 + 0.663
                             )

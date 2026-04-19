@@ -9,26 +9,26 @@ from src.math.Mat4x4 import Mat4x4
 
 class SimplePolygon(Model):
 
-    def __init__(self, plt_axis, *vertices,
+    def __init__(self, *vertices,
                  color="grey",
                  edgecolor="black",
                  line_style="-",
                  line_width=1.0,
                  alpha=1.0
                  ):
-        super().__init__(plt_axis, *vertices, color=color)
+        super().__init__(*vertices, color=color)
 
         self.edgecolor = edgecolor
         self.line_style = line_style
         self.line_width = line_width
         self.alpha = alpha
 
-    def draw_model(self):
+    def draw_model(self, plt_axis):
         transformed_geometry = self.transformed_geometry
         ps = [el.xyz for el in transformed_geometry]
 
         draw_poly(
-            self.plt_axis,
+            plt_axis,
             ps,
             alpha=self.alpha,
             edgecolor=self.edgecolor,
@@ -36,7 +36,7 @@ class SimplePolygon(Model):
         )
 
         draw_broken_line(
-            self.plt_axis,
+            plt_axis,
             ps,
             color=self.edgecolor,
             linewidth=self.line_width,
@@ -52,7 +52,7 @@ if __name__ == '__main__':
 
         def __init__(self, **kwargs):
             super().__init__(**kwargs)
-            polygon = SimplePolygon(self.plt_axis,
+            polygon = SimplePolygon(
                                     0, 0, 0,
                                     0.5, 0, 0,
                                     0.5, 0.5, 0,

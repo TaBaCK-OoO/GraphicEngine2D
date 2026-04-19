@@ -27,7 +27,7 @@ if __name__ == '__main__':
         def __init__(self, **kwargs):
             super().__init__(**kwargs)
 
-            polygon = SimplePolygon(self.plt_axis,
+            polygon = SimplePolygon(
                                     O,
                                     O + t1,
                                     O + t2,
@@ -39,7 +39,7 @@ if __name__ == '__main__':
             self[RECT_KEY] = polygon
             polygon.show_local_frame()
 
-            polygon2 = SimplePolygon(self.plt_axis,
+            polygon2 = SimplePolygon(
                                      O,
                                      O + t1,
                                      O + t2,
@@ -52,7 +52,6 @@ if __name__ == '__main__':
             polygon2.show_local_frame()
 
             self[VECT_KEY] = Vector(
-                self.plt_axis,
                 O,
                 O + ax,
                 color="brown"

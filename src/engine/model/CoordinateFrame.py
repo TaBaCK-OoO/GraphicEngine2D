@@ -4,13 +4,13 @@ from src.engine.model.BaseModel import BaseModel
 
 class CoordinateFrame(BaseModel):
 
-    def __init__(self, plt_axis):
-        super().__init__(plt_axis,
-                         0, 0, 0,
-                         1, 0, 0,
-                         0, 1, 0,
-                         0, 0, 1,
-                         )
+    def __init__(self):
+        super().__init__(
+            0, 0, 0,
+            1, 0, 0,
+            0, 1, 0,
+            0, 0, 1,
+        )
 
         self.color = ("red", "green", "blue")
         self.line_style = "-"
@@ -33,7 +33,7 @@ class CoordinateFrame(BaseModel):
         if line_style is not None:
             self.line_style = line_style  # coordinate axis line style
 
-    def draw_model(self):
+    def draw_model(self, plt_axis):
         transformed_geometry = self.transformed_geometry
         ps = [el.xyz for el in transformed_geometry]
 
@@ -43,7 +43,7 @@ class CoordinateFrame(BaseModel):
         oz = ps[3]
 
         draw_axis(
-            self.plt_axis,
+            plt_axis,
             origin, ox,
             color=self.color[0],
             linewidth=self.line_width,
@@ -51,7 +51,7 @@ class CoordinateFrame(BaseModel):
         )
 
         draw_axis(
-            self.plt_axis,
+            plt_axis,
             origin, oy,
             color=self.color[1],
             linewidth=self.line_width,
@@ -59,7 +59,7 @@ class CoordinateFrame(BaseModel):
         )
 
         draw_axis(
-            self.plt_axis,
+            plt_axis,
             origin, oz,
             color=self.color[2],
             linewidth=self.line_width,

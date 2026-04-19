@@ -9,37 +9,37 @@ z = (0, 0, 1)
 OX = "OX"
 OY = "OY"
 OZ = "OZ"
+
+
 class VectorScene(Scene):
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
 
-        ox = Vector(self.plt_axis,
-                          O, x,
-                          color="red"
-                          )
+        ox = Vector(
+            O, x,
+            color="red"
+        )
         self[OX] = ox
         ox.linewidth = 3
 
-        oy = Vector(self.plt_axis,
-                          O, y,
-                          color="green"
-                          )
+        oy = Vector(
+            O, y,
+            color="green"
+        )
         self[OY] = oy
         oy.linewidth = 3
 
-        oz = Vector(self.plt_axis,
-                          O, z,
-                          color="blue"
-                          )
+        oz = Vector(
+            O, z,
+            color="blue"
+        )
         self[OZ] = oz
         oz.linewidth = 3
 
 
 if __name__ == '__main__':
-
     def frame1(scene):
-
         print_label(
             scene.plt_axis,
             start=O,
@@ -63,6 +63,7 @@ if __name__ == '__main__':
             start=z,
             label=r"$z$", label_color="blue", label_fontsize=22,
             label_offset=(0.0, -0.3, 0.3))
+
 
     scene = VectorScene(
         image_size=(10, 10),  # image size: 1 - 100 pixels

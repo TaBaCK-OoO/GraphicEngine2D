@@ -5,23 +5,23 @@ from src.engine.scene.Scene import Scene
 
 class BrokenLine(Model):
 
-    def __init__(self, plt_axis,
+    def __init__(self,
                  *vertices,
                  color="black",
                  linewidth=1.0,
                  linestyle="solid",
                  ):
-        super().__init__(plt_axis, *vertices, color=color)
+        super().__init__(*vertices, color=color)
 
         self.linestyle = linestyle
         self.linewidth = linewidth
 
-    def draw_model(self):
+    def draw_model(self, plt_axis):
         transformed_geometry = self.transformed_geometry
         ps = [el.xyz for el in transformed_geometry]
 
         draw_broken_line(
-            self.plt_axis,
+            plt_axis,
             ps,
             color=self.color,
             linewidth=self.linewidth,
@@ -37,14 +37,14 @@ if __name__ == '__main__':
 
         def __init__(self, **kwargs):
             super().__init__(**kwargs)
-            self[MODEL_KEY] = BrokenLine(self.plt_axis,
-                                         0, 0, 0,
-                                         0.557, 0.500, 0.663,
-                                         1, 1, 1,
-                                         -1, 1, 1,
-                                         0, 0, 0,
-                                         color="brown"
-                                         )
+            self[MODEL_KEY] = BrokenLine(
+                0, 0, 0,
+                0.557, 0.500, 0.663,
+                1, 1, 1,
+                -1, 1, 1,
+                0, 0, 0,
+                color="brown"
+            )
 
 
 

@@ -39,12 +39,12 @@ if __name__ == '__main__':
 
         def __init__(self, **kwargs):
             super().__init__(**kwargs)
-            cube = Cube(self.plt_axis, alpha=0.1)
+            cube = Cube(alpha=0.1)
             self[CUBE_KEY] = cube
             cube.show_pivot()
             cube.show_local_frame()
 
-            cube_target = Cube(self.plt_axis, alpha=0.1, color="grey", line_width=0.5, line_style="-.")
+            cube_target = Cube(alpha=0.1, color="grey", line_width=0.5, line_style="-.")
             self[CUBE_TARGET_KEY] = cube_target
             cube_target.rotation = q_final
 

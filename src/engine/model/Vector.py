@@ -16,12 +16,12 @@ class Vector(Model):
         self.linestyle = linestyle
         self.linewidth = linewidth
 
-    def draw_model(self):
+    def draw_model(self, plt_axis):
         transformed_geometry = self.transformed_geometry
         ps = [el.xyz for el in transformed_geometry]
 
         draw_axis(
-            self.plt_axis,
+            plt_axis,
             ps[0], ps[1],
             color=self.color,
             linewidth=self.linewidth,

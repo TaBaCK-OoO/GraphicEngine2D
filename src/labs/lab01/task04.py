@@ -9,7 +9,6 @@ from src.math.Vec4 import Vec4
 
 if __name__ == '__main__':
     CUBE_KEY = "cube"
-    CUBE_TARGET_KEY = "cube_targer"
     frames_num = 80
 
 
@@ -18,14 +17,11 @@ if __name__ == '__main__':
         def __init__(self, **kwargs):
             super().__init__(**kwargs)
             cube = Cube(alpha=0.1)
-            self[CUBE_KEY] = cube
-            # cube.show_pivot()
             cube.show_local_frame()
+            cube.pivot(0.5, 0.5, 0.5)
+            cube.show_pivot()
+            self[CUBE_KEY] = cube
 
-            cube_target = Cube(
-                               alpha=0.1, color="grey",
-                               line_width=0.5, line_style="-.")
-            self[CUBE_TARGET_KEY] = cube_target
 
     animated_scene = CubeScene()
 
@@ -39,44 +35,15 @@ if __name__ == '__main__':
     Ry = Mat4x4.rotation_y(angle_y)
     Rz = Mat4x4.rotation_z(angle_z)
 
-    ##### Rx ######
-    Y1 = Rx * OY
-    Z1 = Rx * OZ
+    R_final = Rz * Ry * Rx
 
-    ##### Ry ######
-    # Z2 = Ry * Z1  # this was the bug!!
-    Ry_intrinsic = Mat4x4.rotation(angle_y, Y1)  # Rotation around the updated Y1!
-    Z2 = Ry_intrinsic * Z1
 
-    animation_x = RotationAnimation(
-        end=angle_x,
-        axis=OX,
-        channel=CUBE_KEY,
-    )
-
-    animation_y = RotationAnimation(
-        end=angle_y,
-        axis=Y1,
-        channel=CUBE_KEY,
-    )
-
-    animation_z = RotationAnimation(
-        end=angle_z,
-        axis=Z2,
-        channel=CUBE_KEY,
-    )
-
-    # R_final = Rz * Ry * Rx  # extrinsic rotation
-    R_final = Rx * Ry * Rz    # intrinsic rotation
     animation = TrsTransformationAnimation(
         end=R_final,
-        channel=CUBE_TARGET_KEY,
+        channel=CUBE_KEY,
     )
 
     animated_scene.add_animations(
-        animation_x,
-        animation_y,
-        animation_z,
         animation,
     )
 

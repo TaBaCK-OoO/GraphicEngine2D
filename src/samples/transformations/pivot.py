@@ -9,7 +9,7 @@ if __name__ == '__main__':
     class SampleScene(Scene):
         def __init__(self, **kwargs):
             super().__init__(**kwargs)
-            triangle = SimplePolygon(self.plt_axis,
+            triangle = SimplePolygon(
                                      0, 1, 0,
                                      2, 1, 0,
                                      1, 2, 0,

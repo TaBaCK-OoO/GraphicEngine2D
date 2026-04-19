@@ -44,8 +44,9 @@ class Scene(ABC):
     def add_figure(self, figure, name="default"):
         if name not in self.figures:
             self.figures[name] = figure
+            figure.plt_axis = self.plt_axis
         else:
-            raise KeyError("Figure name {} already exists".format(name))
+            raise KeyError(f"Figure name {name} already exists")
 
     def __setitem__(self, name, figure):
         self.add_figure(figure, name)
@@ -95,7 +96,7 @@ class Scene(ABC):
         if name is None:
             self._draw_frames()
         elif name in self.figures:
-            self[name].draw()
+            self[name].draw(self.plt_axis)
         else:
             raise KeyError("Figure {} doesn't exist to draw".format(name))
 
@@ -109,14 +110,14 @@ class Scene(ABC):
     def _draw_frames(self):
         if len(self.frame_sequence) == 0:
             for name, figure in self.figures.items():
-                figure.draw()
+                figure.draw(self.plt_axis)
             return
 
         for frame in self.frame_sequence:
             frame.on_frame(self)
 
             for name, figure in self.figures.items():
-                figure.draw()
+                figure.draw(self.plt_axis)
 
     def _prepare(self):
         self.__setup_view()
