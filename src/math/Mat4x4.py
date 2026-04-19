@@ -17,6 +17,22 @@ class Mat4x4:
     ERROR_MESSAGE_SCALE = "Недостатньо даних, щоб сформувати матрицю розтягу"
     ERROR_MESSAGE_EULER_CONFIG_UNKNOWN = "Unknown Euler configuration"
 
+    # Tait-Bryan конфігурації (всі осі різні)
+    XYZ = "XYZ"
+    XZY = "XZY"
+    YXZ = "YXZ"
+    YZX = "YZX"
+    ZXY = "ZXY"
+    ZYX = "ZYX"
+
+    # Власні кути Ейлера (перша та третя вісь однакові)
+    XYX = "XYX"
+    XZX = "XZX"
+    YXY = "YXY"
+    YZY = "YZY"
+    ZXZ = "ZXZ"
+    ZYZ = "ZYZ"
+
     def __init__(self, *data):
         """
         Конструктор класу Matrix3x3.
@@ -236,36 +252,184 @@ class Mat4x4:
         return Ry_1 * Rx_1 * Rz * Rx * Ry
 
     @staticmethod
-    def rotation_euler(phi, theta, psi, configuration="xyz"):
+    def rotation_euler(phi, theta, psi, configuration=XYZ):
+        """
+        Формує матрицю обертання для заданих кутів Ейлера (phi, theta, psi)
+        та конфігурації осей обертання.
+
+        Підтримувані конфігурації Tait-Bryan (всі осі різні):
+            XYZ, XZY, YXZ, YZX, ZXY, ZYX
+        Підтримувані власні кути Ейлера (перша та третя вісь однакові):
+            XYX, XZX, YXY, YZY, ZXZ, ZYZ
+        """
+        Rx = Mat4x4.rotation_x
+        Ry = Mat4x4.rotation_y
+        Rz = Mat4x4.rotation_z
         configuration = configuration.upper()
-        if configuration == "XYZ":
-            return Mat4x4.rotation_x(phi) * Mat4x4.rotation_y(theta) * Mat4x4.rotation_z(psi)
-        elif configuration == "ZXZ":
-            return Mat4x4.rotation_z(phi) * Mat4x4.rotation_x(theta) * Mat4x4.rotation_z(psi)
+        # --- Tait-Bryan ---
+        if configuration == Mat4x4.XYZ:
+            return Rx(phi) * Ry(theta) * Rz(psi)
+        elif configuration == Mat4x4.XZY:
+            return Rx(phi) * Rz(theta) * Ry(psi)
+        elif configuration == Mat4x4.YXZ:
+            return Ry(phi) * Rx(theta) * Rz(psi)
+        elif configuration == Mat4x4.YZX:
+            return Ry(phi) * Rz(theta) * Rx(psi)
+        elif configuration == Mat4x4.ZXY:
+            return Rz(phi) * Rx(theta) * Ry(psi)
+        elif configuration == Mat4x4.ZYX:
+            return Rz(phi) * Ry(theta) * Rx(psi)
+        # --- Власні кути Ейлера ---
+        elif configuration == Mat4x4.XYX:
+            return Rx(phi) * Ry(theta) * Rx(psi)
+        elif configuration == Mat4x4.XZX:
+            return Rx(phi) * Rz(theta) * Rx(psi)
+        elif configuration == Mat4x4.YXY:
+            return Ry(phi) * Rx(theta) * Ry(psi)
+        elif configuration == Mat4x4.YZY:
+            return Ry(phi) * Rz(theta) * Ry(psi)
+        elif configuration == Mat4x4.ZXZ:
+            return Rz(phi) * Rx(theta) * Rz(psi)
+        elif configuration == Mat4x4.ZYZ:
+            return Rz(phi) * Ry(theta) * Rz(psi)
         else:
             raise ValueError(Mat4x4.ERROR_MESSAGE_EULER_CONFIG_UNKNOWN)
 
-    def toEuler(self, configuration="XYZ"):
+    def toEuler(self, configuration=XYZ):
+        """
+        Декомпозує матрицю обертання у кути Ейлера (phi, theta, psi)
+        для заданої конфігурації.
+
+        Повертає кортеж (phi, theta, psi) у радіанах.
+        """
         configuration = configuration.upper()
-        if configuration == "XYZ":
+        # --- Tait-Bryan ---
+        if configuration == Mat4x4.XYZ:
             return Mat4x4.toEulerXYZ(self)
-        elif configuration == "ZXZ":
+        elif configuration == Mat4x4.XZY:
+            return Mat4x4.toEulerXZY(self)
+        elif configuration == Mat4x4.YXZ:
+            return Mat4x4.toEulerYXZ(self)
+        elif configuration == Mat4x4.YZX:
+            return Mat4x4.toEulerYZX(self)
+        elif configuration == Mat4x4.ZXY:
+            return Mat4x4.toEulerZXY(self)
+        elif configuration == Mat4x4.ZYX:
+            return Mat4x4.toEulerZYX(self)
+        # --- Власні кути Ейлера ---
+        elif configuration == Mat4x4.XYX:
+            return Mat4x4.toEulerXYX(self)
+        elif configuration == Mat4x4.XZX:
+            return Mat4x4.toEulerXZX(self)
+        elif configuration == Mat4x4.YXY:
+            return Mat4x4.toEulerYXY(self)
+        elif configuration == Mat4x4.YZY:
+            return Mat4x4.toEulerYZY(self)
+        elif configuration == Mat4x4.ZXZ:
             return Mat4x4.toEulerZXZ(self)
+        elif configuration == Mat4x4.ZYZ:
+            return Mat4x4.toEulerZYZ(self)
         else:
             raise ValueError(Mat4x4.ERROR_MESSAGE_EULER_CONFIG_UNKNOWN)
+
+    # ── Tait-Bryan: декомпозиції ──────────────────────────────────────────────
 
     @staticmethod
     def toEulerXYZ(r):
-        phi = np.arctan2(-r[1, 2], r[2, 2])
-        theta = np.arcsin(r[0, 2])
-        psi = np.arctan2(-r[0, 1], r[0, 0])
+        """R = Rx(phi) * Ry(theta) * Rz(psi)"""
+        phi   = np.arctan2(-r[1, 2], r[2, 2])
+        theta = np.arcsin( r[0, 2])
+        psi   = np.arctan2(-r[0, 1], r[0, 0])
         return float(phi), float(theta), float(psi)
 
     @staticmethod
+    def toEulerXZY(r):
+        """R = Rx(phi) * Rz(theta) * Ry(psi)"""
+        phi   = np.arctan2( r[2, 1], r[1, 1])
+        theta = np.arcsin(-r[0, 1])
+        psi   = np.arctan2( r[0, 2], r[0, 0])
+        return float(phi), float(theta), float(psi)
+
+    @staticmethod
+    def toEulerYXZ(r):
+        """R = Ry(phi) * Rx(theta) * Rz(psi)"""
+        phi   = np.arctan2( r[0, 2], r[2, 2])
+        theta = np.arcsin(-r[1, 2])
+        psi   = np.arctan2( r[1, 0], r[1, 1])
+        return float(phi), float(theta), float(psi)
+
+    @staticmethod
+    def toEulerYZX(r):
+        """R = Ry(phi) * Rz(theta) * Rx(psi)"""
+        phi   = np.arctan2(-r[2, 0], r[0, 0])
+        theta = np.arcsin( r[1, 0])
+        psi   = np.arctan2(-r[1, 2], r[1, 1])
+        return float(phi), float(theta), float(psi)
+
+    @staticmethod
+    def toEulerZXY(r):
+        """R = Rz(phi) * Rx(theta) * Ry(psi)"""
+        phi   = np.arctan2(-r[0, 1], r[1, 1])
+        theta = np.arcsin( r[2, 1])
+        psi   = np.arctan2(-r[2, 0], r[2, 2])
+        return float(phi), float(theta), float(psi)
+
+    @staticmethod
+    def toEulerZYX(r):
+        """R = Rz(phi) * Ry(theta) * Rx(psi)"""
+        phi   = np.arctan2( r[1, 0], r[0, 0])
+        theta = np.arcsin(-r[2, 0])
+        psi   = np.arctan2( r[2, 1], r[2, 2])
+        return float(phi), float(theta), float(psi)
+
+    # ── Власні кути Ейлера: декомпозиції ─────────────────────────────────────
+
+    @staticmethod
     def toEulerZXZ(r):
-        phi = np.arctan2(r[0, 2], -r[1, 2])
-        theta = np.arccos(r[2, 2])
-        psi = np.arctan2(r[2, 0], r[2, 1])
+        """R = Rz(phi) * Rx(theta) * Rz(psi)"""
+        phi   = np.arctan2( r[0, 2], -r[1, 2])
+        theta = np.arccos(  r[2, 2])
+        psi   = np.arctan2( r[2, 0],  r[2, 1])
+        return float(phi), float(theta), float(psi)
+
+    @staticmethod
+    def toEulerZYZ(r):
+        """R = Rz(phi) * Ry(theta) * Rz(psi)"""
+        phi   = np.arctan2( r[1, 2],  r[0, 2])
+        theta = np.arccos(  r[2, 2])
+        psi   = np.arctan2( r[2, 1], -r[2, 0])
+        return float(phi), float(theta), float(psi)
+
+    @staticmethod
+    def toEulerXYX(r):
+        """R = Rx(phi) * Ry(theta) * Rx(psi)"""
+        phi   = np.arctan2( r[1, 0], -r[2, 0])
+        theta = np.arccos(  r[0, 0])
+        psi   = np.arctan2( r[0, 1],  r[0, 2])
+        return float(phi), float(theta), float(psi)
+
+    @staticmethod
+    def toEulerXZX(r):
+        """R = Rx(phi) * Rz(theta) * Rx(psi)"""
+        phi   = np.arctan2( r[2, 0],  r[1, 0])
+        theta = np.arccos(  r[0, 0])
+        psi   = np.arctan2( r[0, 2], -r[0, 1])
+        return float(phi), float(theta), float(psi)
+
+    @staticmethod
+    def toEulerYXY(r):
+        """R = Ry(phi) * Rx(theta) * Ry(psi)"""
+        phi   = np.arctan2( r[0, 1],  r[2, 1])
+        theta = np.arccos(  r[1, 1])
+        psi   = np.arctan2( r[1, 0], -r[1, 2])
+        return float(phi), float(theta), float(psi)
+
+    @staticmethod
+    def toEulerYZY(r):
+        """R = Ry(phi) * Rz(theta) * Ry(psi)"""
+        phi   = np.arctan2( r[2, 1], -r[0, 1])
+        theta = np.arccos(  r[1, 1])
+        psi   = np.arctan2( r[1, 2],  r[1, 0])
         return float(phi), float(theta), float(psi)
 
     def to_angle_axis(self):
@@ -306,4 +470,11 @@ if __name__ == "__main__":
     v = Vec4(1, 2, 3)
     MV =  m * v
     print(MV)
+
+    M = Mat4x4.rotation_euler(
+        np.radians(30),
+        np.radians(45),
+        np.radians(15),
+    )
+
 
