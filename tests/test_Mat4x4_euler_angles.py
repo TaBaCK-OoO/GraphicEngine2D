@@ -1,6 +1,5 @@
 import numpy as np
 import pytest
-from scipy.spatial.transform import Rotation as R
 
 from src.math.Mat4x4 import Mat4x4
 from src.math.utils_matrix import is_same_matrix
