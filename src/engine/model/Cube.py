@@ -52,6 +52,7 @@ class Cube(Model):
     def draw_model(self):
         for polygon in self.polygons:
             polygon.transformation = self.transformation
+            polygon.pivot(self._pivot)
             polygon.draw()
 
     def apply_transformation_to_geometry(self):
