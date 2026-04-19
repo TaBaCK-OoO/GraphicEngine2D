@@ -44,8 +44,9 @@ if __name__ == '__main__':
     Z1 = Rx * OZ
 
     ##### Ry ######
-    Z2 = Ry * Z1
-
+    # Z2 = Ry * Z1  # ось тут помилка!!
+    Ry_intrinsic = Mat4x4.rotation(angle_y, Y1)  # Обертання навколо оновленої Y1!
+    Z2 = Ry_intrinsic * Z1
 
     animation_x = RotationAnimation(
         end=angle_x,
