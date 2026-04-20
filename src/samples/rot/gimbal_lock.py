@@ -7,6 +7,7 @@ from src.math.Mat4x4 import Mat4x4
 VECT_KEY1 = "vector"
 VECT_KEY2 = "vector2"
 
+
 def frame0(scene):
     pass
 
@@ -31,27 +32,26 @@ def frame1(scene):
     vector2.transformation = Mat4x4.rotation_euler(*euler_angles_rad2)
 
 
-
 class VectorScene(Scene):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
 
-
         vector = Vector(
-                        0, 0, 0,
-                        1, 0, 1
-                        )
+            0, 0, 0,
+            1, 0, 1
+        )
         self[VECT_KEY1] = vector
         vector.color = "brown"
-        vector.linewidth=2.0
+        vector.linewidth = 2.0
 
         vector2 = Vector(
-                        0, 0, 0,
-                         1, 0, 1
-                        )
+            0, 0, 0,
+            1, 0, 1
+        )
         self[VECT_KEY2] = vector2
         vector2.color = "yellow"
-        vector2.linewidth=2.0
+        vector2.linewidth = 2.0
+
 
 if __name__ == '__main__':
     FIGURE_KEY = "polygon"
@@ -64,4 +64,3 @@ if __name__ == '__main__':
 
     sceneVector.add_frames(frame0, frame1)
     sceneVector.show()
-
