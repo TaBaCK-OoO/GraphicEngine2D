@@ -40,13 +40,13 @@ class Cube(Model):
         for i, face in enumerate(faces):
             self.polygons.append(
                 SimplePolygon(
-                              *face,
-                              color=color,
-                              edgecolor=edge_color,
-                              alpha=alpha,
-                              line_width=line_width,
-                              line_style=line_style,
-                              ))
+                    *face,
+                    color=color,
+                    edgecolor=edge_color,
+                    alpha=alpha,
+                    line_width=line_width,
+                    line_style=line_style,
+                ))
 
     def draw_model(self, plt_axis):
         for polygon in self.polygons:
@@ -64,19 +64,12 @@ class Cube(Model):
 if __name__ == '__main__':
     CUBE_KEY = "cube"
 
+    # create cube
+    cube = Cube(alpha=0.1)
+    cube.show_pivot()
+    cube.show_local_frame()
 
-    class CubeScene(Scene):
-
-        def __init__(self, **kwargs):
-            super().__init__(**kwargs)
-            cube = Cube(alpha=0.1)
-            self[CUBE_KEY] = cube
-            cube.show_pivot()
-            cube.show_local_frame()
-
-
-    simple_scene = CubeScene(
-        axis_color="grey",  # coordinate axis color
-    )
-
+    # Create a scene and add Cube into the scene.
+    simple_scene = Scene()
+    simple_scene[CUBE_KEY] = cube
     simple_scene.show()

@@ -9,7 +9,7 @@ from src.engine.scene.Frame import Frame, FrameCallback
 matplotlib.use("TkAgg")
 
 
-class Scene(ABC):
+class Scene():
 
     def __init__(self,
                  image_size=(8, 8),
@@ -77,10 +77,6 @@ class Scene(ABC):
                                 azim=225,
                                 roll=-45)
 
-        # self.plt_axis.view_init(elev=110,
-        #                         azim=245,
-        #                         roll=-25)
-
     def __setup_base_parameters(self):
         # Disable default axes
         if not self.base_axis_show:
@@ -133,3 +129,8 @@ class Scene(ABC):
         self._prepare()
         self.__draw()
         Scene._show_plot()
+
+
+if __name__ == '__main__':
+    scene = Scene()
+    scene.show()
