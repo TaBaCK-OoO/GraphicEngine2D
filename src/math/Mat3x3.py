@@ -108,8 +108,6 @@ class Mat3x3:
 
         if isinstance(other, Mat3x3):
             return Mat3x3(np.dot(self.data, other.data))
-        if isinstance(other, Mat3x3):
-            return Mat3x3(np.dot(self.data, other.data))
         elif isinstance(other, Vec3):
             return Vec3(np.dot(self.data, other.data))
         return Mat3x3(np.dot(self.data, other))

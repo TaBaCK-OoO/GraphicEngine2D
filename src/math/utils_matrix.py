@@ -4,10 +4,8 @@ import numpy as np
 from scipy.spatial.transform import Rotation
 from scipy.spatial.transform import Rotation as R
 
-from src.math.Mat3x3 import Mat3x3
 from src.math.Mat4x4 import Mat4x4
 from src.math.Quaternion import Quaternion
-from src.math.Rotations import get_rotation_angle
 
 
 def is_orthogonal(matrix, tol=1e-6):
@@ -29,47 +27,6 @@ def is_same_matrix(matrix1, matrix2, tol=1e-6):
     mat_dif = matrix1 - matrix2
 
     return mat_dif.norm() < tol
-
-# def decompose_affine(transition):
-#
-#     if not isinstance(transition, (np.ndarray, Mat4x4)):
-#         raise TypeError("Transformation error.")
-#
-#     if isinstance(transition, Mat4x4):
-#         transition = transition.data
-#
-#     if transition.shape != (4, 4):
-#         raise ValueError("Matrix must be 4x4.")
-#
-#     # Extract translation
-#     translation = transition[:3, 3]
-#
-#     # Extract RS matrix
-#     rs = transition[:3, :3]
-#
-#     # Compute scale
-#     scale_x = np.linalg.norm(rs[:, 0])
-#     scale_y = np.linalg.norm(rs[:, 1])
-#     scale_z = np.linalg.norm(rs[:, 2])
-#     scales = np.array([scale_x, scale_y, scale_z])
-#
-#     # Compute rotation
-#     rotation = rs / scales
-#
-#     # # angle = get_rotation_angle(rotation)
-#     #
-#     # return translation, rotation, scales
-#
-#
-#     # Polar decomposition to correct possible distortions
-#     U, _, Vt = np.linalg.svd(rotation)
-#     R = U @ Vt  # Pure orthogonal rotation matrix
-#
-#     # Get rotation axis and angle
-#     rot = Rotation.from_matrix(R)
-#     axis, angle = rot.as_rotvec(), np.degrees(rot.magnitude())
-#
-#     return T, scale_x, R, axis, angle
 
 
 def decompose_translation_quaternion_scale(T):
@@ -130,34 +87,6 @@ def decompose_affine(matrix):
 
     return T, R, S, axis, angle
 
-def decompose_affine3(transition):
-
-        if not isinstance(transition, (np.ndarray, Mat3x3)):
-            raise TypeError("Transformation error.")
-
-        if isinstance(transition, Mat3x3):
-            transition = transition.data
-
-        if transition.shape != (3, 3):
-            raise ValueError("Matrix must be 3x3.")
-
-        # Extract translation
-        translation = transition[:2, 2]
-
-        # Extract RS matrix
-        rs = transition[:2, :2]
-
-        # Compute scale
-        scale_x = np.linalg.norm(rs[:, 0])
-        scale_y = np.linalg.norm(rs[:, 1])
-        scales = np.array([scale_x, scale_y])
-
-        # Compute rotation
-        rotation = rs / scales
-
-        angle = get_rotation_angle(rotation)
-
-        return translation, angle, scales
 
 def decompose_affine_2(matrix):
     """

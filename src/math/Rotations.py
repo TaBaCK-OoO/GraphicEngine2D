@@ -55,29 +55,6 @@ def rotation_matrix_z(phi):
     ])
 
 
-def get_rotation_angle(matrix):
-    # Check orthogonality of R
-    if not np.allclose(np.dot(matrix.T, matrix), np.eye(2)) or not np.isclose(np.linalg.det(matrix), 1):
-        raise ValueError("Matrix is not a valid rotation matrix.")
-
-    """
-    Computes the rotation angle (in radians) from a 2D rotation matrix.
-    """
-    if matrix.shape != (2, 2) and matrix.shape != (3, 3):
-        raise ValueError("Invalid rotation matrix!")
-
-    if matrix.shape == (3, 3):
-        matrix = matrix[:2, :2]
-
-    # Extract sin and cos values
-    cos_theta = matrix[0, 0]
-    sin_theta = matrix[1, 0]
-
-    # Compute angle via arctan2
-    angle = np.arctan2(sin_theta, cos_theta)
-    return angle
-
-
 # Usage example:
 if __name__ == "__main__":
     euler_angles_45_45_30 = [45, 15, 30]

@@ -21,25 +21,18 @@ animation_quat = QuaternionAnimation(
     channel=CUBE_KEY,
 )
 
-
-class AnimScene(AnimatedScene):
-
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
-
-        cube = Cube(alpha=0.1)
-        self[CUBE_KEY] = cube
-        cube.show_pivot()
-        cube.pivot(0.5, 0.5, 0.5)
-        cube.show_local_frame()
-
-
 if __name__ == '__main__':
-    animated_scene = AnimScene(
+    animated_scene = AnimatedScene(
         title="",  # figure title
         image_size=(10, 10),  # image size: 1 - 100 pixels
         coordinate_rect=(-1, -1, -1, 1, 1, 1),  # coordinate system dimensions
     )
+
+    cube = Cube(alpha=0.1)
+    cube.show_pivot()
+    cube.pivot(0.5, 0.5, 0.5)
+    cube.show_local_frame()
+    animated_scene[CUBE_KEY] = cube
 
     animated_scene.add_animations(
         animation_quat,
