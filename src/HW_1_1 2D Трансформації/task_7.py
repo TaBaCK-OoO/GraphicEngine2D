@@ -20,25 +20,21 @@ class Task7Scene(AnimatedScene):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
 
-        # Опорна точка 1: (0.5, 0.5)[cite: 32]
         poly1 = Polygon(rectangle_vertices, linewidth=2.0, color="blue", line_style="-")
         poly1.pivot(0.5, 0.5)
         poly1.show_pivot(True) # Візуалізація опорної точки[cite: 2, 32]
         self[ID_PIVOT_1] = poly1
 
-        # Опорна точка 2: (0, 1)[cite: 32]
         poly2 = Polygon(rectangle_vertices, linewidth=2.0, color="red", line_style="--")
         poly2.pivot(0, 1)
         poly2.show_pivot(True) # Візуалізація опорної точки[cite: 2, 32]
         self[ID_PIVOT_2] = poly2
 
-        # Опорна точка 3: (1, 1)[cite: 32]
         poly3 = Polygon(rectangle_vertices, linewidth=2.0, color="green", line_style=":")
         poly3.pivot(1, 1)
         poly3.show_pivot(True) # Візуалізація опорної точки[cite: 2, 32]
         self[ID_PIVOT_3] = poly3
 
-        # Опорна точка 4: (2, 2)[cite: 32]
         poly4 = Polygon(rectangle_vertices, linewidth=2.0, color="yellow", line_style="--")
         poly4.pivot(2, 2)
         poly4.show_pivot(True)  # Візуалізація опорної точки[cite: 2, 32]
@@ -59,12 +55,10 @@ if __name__ == '__main__':
 
     rot_angle = np.radians(60)
 
-    # Анімації обертання для кожного випадку з урахуванням опорної точки[cite: 39, 47]
     anim1 = RotationAnimation(end=rot_angle, channel=ID_PIVOT_1, apply_geometry_transformation_on_finish=True)
     anim2 = RotationAnimation(end=rot_angle, channel=ID_PIVOT_2, apply_geometry_transformation_on_finish=True)
     anim3 = RotationAnimation(end=rot_angle, channel=ID_PIVOT_3, apply_geometry_transformation_on_finish=True)
     anim4 = RotationAnimation(end=rot_angle, channel=ID_PIVOT_4, apply_geometry_transformation_on_finish=True)
 
-    # Відтворення анімацій по черзі[cite: 10]
     scene.add_animations(anim1, anim2, anim3, anim4)
     scene.show()

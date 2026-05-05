@@ -18,7 +18,6 @@ class Task2Scene(AnimatedScene):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
 
-        # Оригінальний квадрат (сірий, пунктир)[cite: 32]
         self[ID_ORIGINAL] = Polygon(
             rectangle_vertices,
             linewidth=2.0,

@@ -13,7 +13,7 @@ rectangle_vertices = [
 
 
 def print_explanation():
-    """Виводить аналітичне пояснення для Завдання 12"""
+
     print("--- Завдання 12: Розкладання матриці ---")
     print("   Розкласти матрицю T на компоненти TRS - НЕМОЖЛИВО.")
 
@@ -28,10 +28,10 @@ def print_explanation():
 
 
 if __name__ == '__main__':
-    # Виводимо пояснення в консоль для здачі дз
+
     print_explanation()
 
-    # Використовуємо статичну Scene, оскільки анімація вимагає валідних TRS компонентів[cite: 12]
+
     scene = Scene(
         image_size=(8, 8),
         coordinate_rect=(-1, -1, 6, 6),
@@ -43,7 +43,7 @@ if __name__ == '__main__':
         keep_aspect_ratio=True,
     )
 
-    # 1. Оригінальний квадрат (0,0) - (1,1)[cite: 4, 12]
+
     orig_poly = Polygon(
         rectangle_vertices,
         linewidth=2.0,
@@ -52,7 +52,6 @@ if __name__ == '__main__':
     )
     scene.add_figure(orig_poly, "ID_ORIGINAL")
 
-    # 2. Трансформований квадрат[cite: 4, 12]
     trans_poly = Polygon(
         rectangle_vertices,
         linewidth=3.0,
@@ -60,15 +59,12 @@ if __name__ == '__main__':
         line_style="-"
     )
 
-    # 3. Матриця з умови задачі (Переміщення (4, 3))[cite: 3]
     T = Mat3x3(
         0.866, 0.5, 4.0,
         0.5, 0.866, 3.0,
         0, 0, 1
     )
 
-    # Застосовуємо трансформацію напряму. 
-    # Рушій сам перемножить вершини на цю матрицю під час відмальовування[cite: 7, 12]
     trans_poly.transformation = T
     scene.add_figure(trans_poly, "ID_TRANSFORMED")
 

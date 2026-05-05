@@ -1,4 +1,4 @@
-# task_10.py
+
 import numpy as np
 
 from src.engine.scene.AnimatedScene import AnimatedScene
@@ -31,21 +31,21 @@ class Task10Scene(AnimatedScene):
             line_style="--"
         )
 
-        # Порядок 1: Масштабування -> Обертання -> Зсув (Синій)[cite: 30, 31]
+
         poly1 = Polygon(rectangle_vertices, linewidth=2.0, color="blue", line_style="-")
-        poly1.pivot(0.5, 0.5) # Опорна точка 0.5, 0.5[cite: 32]
+        poly1.pivot(0.5, 0.5)
         poly1.show_pivot(True)
         self[ID_ORDER_1] = poly1
 
-        # Порядок 2: Зсув -> Масштабування -> Обертання (Червоний)[cite: 30, 31]
+
         poly2 = Polygon(rectangle_vertices, linewidth=2.0, color="red", line_style="--")
-        poly2.pivot(0.5, 0.5) # Опорна точка 0.5, 0.5[cite: 32]
+        poly2.pivot(0.5, 0.5)
         poly2.show_pivot(True)
         self[ID_ORDER_2] = poly2
 
-        # Порядок 3: Масштабування -> Зсув -> Обертання (Зелений)[cite: 30, 31]
+
         poly3 = Polygon(rectangle_vertices, linewidth=2.0, color="green", line_style=":")
-        poly3.pivot(0.5, 0.5) # Опорна точка 0.5, 0.5[cite: 32]
+        poly3.pivot(0.5, 0.5)
         poly3.show_pivot(True)
         self[ID_ORDER_3] = poly3
 
@@ -66,17 +66,17 @@ if __name__ == '__main__':
     rot_params = np.radians(30)
     trans_params = vertex(1, -1)
 
-    # --- ПОРЯДОК 1: Масштабування -> Обертання -> Зсув ---[cite: 46, 47, 48]
+    # --- ПОРЯДОК 1: Масштабування -> Обертання -> Зсув ---
     s1 = ScaleAnimation(end=scale_params, channel=ID_ORDER_1, apply_geometry_transformation_on_finish=True)
     r1 = RotationAnimation(end=rot_params, channel=ID_ORDER_1, apply_geometry_transformation_on_finish=True)
     t1 = TranslationAnimation(end=trans_params, channel=ID_ORDER_1, apply_geometry_transformation_on_finish=True)
 
-    # --- ПОРЯДОК 2: Зсув -> Масштабування -> Обертання ---[cite: 46, 47, 48]
+    # --- ПОРЯДОК 2: Зсув -> Масштабування -> Обертання ---
     t2 = TranslationAnimation(end=trans_params, channel=ID_ORDER_2, apply_geometry_transformation_on_finish=True)
     s2 = ScaleAnimation(end=scale_params, channel=ID_ORDER_2, apply_geometry_transformation_on_finish=True)
     r2 = RotationAnimation(end=rot_params, channel=ID_ORDER_2, apply_geometry_transformation_on_finish=True)
 
-    # --- ПОРЯДОК 3: Масштабування -> Зсув -> Обертання ---[cite: 46, 47, 48]
+    # --- ПОРЯДОК 3: Масштабування -> Зсув -> Обертання ---
     s3 = ScaleAnimation(end=scale_params, channel=ID_ORDER_3, apply_geometry_transformation_on_finish=True)
     t3 = TranslationAnimation(end=trans_params, channel=ID_ORDER_3, apply_geometry_transformation_on_finish=True)
     r3 = RotationAnimation(end=rot_params, channel=ID_ORDER_3, apply_geometry_transformation_on_finish=True)

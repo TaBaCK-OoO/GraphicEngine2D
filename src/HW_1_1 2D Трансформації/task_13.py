@@ -22,24 +22,21 @@ class Task13Scene(AnimatedScene):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
 
-        # Оригінальний квадрат (сірий)[cite: 32]
         self[ID_ORIGINAL] = Polygon(rectangle_vertices, linewidth=2.0, color="grey", line_style="--")
 
-        # Квадрат, який ми будемо трансформувати знайденими компонентами (синій)[cite: 44]
         poly = Polygon(rectangle_vertices, linewidth=3.0, color="blue", line_style="-")
         poly.show_local_frame(True)
         self[ID_RESTORED] = poly
 
 
 if __name__ == '__main__':
-    # 1. Задана матриця трансформацій T[cite: 3]
+
     T = Mat3x3(
         1.414, -2.121, 1.0,
         1.414,  2.121, 1.0,
         0,      0,     1.0
     )
 
-    # 2. Розкладання матриці T на компоненти за допомогою рушія[cite: 21]
     translation, angle, scales = decompose_affine3(T)
 
     print("--- Завдання 13: Декомпозиція TRS ---")
@@ -47,7 +44,7 @@ if __name__ == '__main__':
     print(f"Поворот (Rotation, градуси): {np.degrees(angle):.1f}")
     print(f"Розтяг (Scale): {scales}")
 
-    # 3. Візуалізація результату
+
     scene = Task13Scene(
         image_size=(8, 8),
         coordinate_rect=(-1, -1, 4, 5),
@@ -59,7 +56,6 @@ if __name__ == '__main__':
         keep_aspect_ratio=True,
     )
 
-    # Застосовуємо отримані компоненти для перевірки (Порядок: S -> R -> T)[cite: 46, 47, 48]
     anim_s = ScaleAnimation(end=scales, channel=ID_RESTORED, apply_geometry_transformation_on_finish=True)
     anim_r = RotationAnimation(end=angle, channel=ID_RESTORED, apply_geometry_transformation_on_finish=True)
     anim_t = TranslationAnimation(end=translation, channel=ID_RESTORED, apply_geometry_transformation_on_finish=True)

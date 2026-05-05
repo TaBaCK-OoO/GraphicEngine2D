@@ -28,16 +28,15 @@ class Task9Scene(AnimatedScene):
             line_style="--"
         )
 
-        # Квадрат для Порядку 1 (Розтяг -> Переміщення)[cite: 30, 31]
         poly1 = Polygon(rectangle_vertices, linewidth=2.0, color="blue", line_style="-")
-        poly1.pivot(1, 1) # Опорна точка (1, 1)[cite: 32]
-        poly1.show_pivot(True) # Візуалізація опорної точки[cite: 2, 32]
+        poly1.pivot(1, 1)
+        poly1.show_pivot(True)
         self[ID_ORDER_1] = poly1
 
-        # Квадрат для Порядку 2 (Переміщення -> Розтяг)[cite: 30, 31]
+
         poly2 = Polygon(rectangle_vertices, linewidth=2.0, color="red", line_style="--")
-        poly2.pivot(1, 1) # Опорна точка (1, 1)[cite: 32]
-        poly2.show_pivot(True) # Візуалізація опорної точки[cite: 2, 32]
+        poly2.pivot(1, 1)
+        poly2.show_pivot(True)
         self[ID_ORDER_2] = poly2
 
 
@@ -56,11 +55,11 @@ if __name__ == '__main__':
     scale_params = (2, 1)
     trans_params = vertex(3, -2)
 
-    # --- ПОРЯДОК 1: Розтяг (відносно pivot) → Переміщення (Синій) ---[cite: 30]
+
     s1 = ScaleAnimation(end=scale_params, channel=ID_ORDER_1, apply_geometry_transformation_on_finish=True)
     t1 = TranslationAnimation(end=trans_params, channel=ID_ORDER_1, apply_geometry_transformation_on_finish=True)
 
-    # --- ПОРЯДОК 2: Переміщення → Розтяг (відносно pivot) (Червоний) ---[cite: 30]
+
     t2 = TranslationAnimation(end=trans_params, channel=ID_ORDER_2, apply_geometry_transformation_on_finish=True)
     s2 = ScaleAnimation(end=scale_params, channel=ID_ORDER_2, apply_geometry_transformation_on_finish=True)
 

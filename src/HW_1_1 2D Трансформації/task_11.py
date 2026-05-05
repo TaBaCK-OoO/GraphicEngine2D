@@ -12,7 +12,6 @@ from src.math.Vec3 import vertex
 ID_GLOBAL = "ID_GLOBAL"
 ID_LOCAL = "ID_LOCAL"
 
-# Вершини після трансформації (глобальна система)[cite: 28, 44]
 transformed_vertices = [
     2.0, 3.4,
     4.9, 4.0,
@@ -25,7 +24,6 @@ class Task11Scene(AnimatedScene):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
 
-        # Прямокутник у глобальній системі координат (трансформований, червоний пунктир)[cite: 32, 40]
         self[ID_GLOBAL] = Polygon(
             transformed_vertices,
             linewidth=2.0,
@@ -33,7 +31,6 @@ class Task11Scene(AnimatedScene):
             line_style="--"
         )
 
-        # Прямокутник, який ми повернемо в локальну систему координат (синій)[cite: 32]
         self[ID_LOCAL] = Polygon(
             transformed_vertices,
             linewidth=3.0,
@@ -54,15 +51,12 @@ if __name__ == '__main__':
         keep_aspect_ratio=True,
     )
 
-    # 1. Задана матриця трансформацій T[cite: 29, 30]
     T = Mat3x3(
         2.934, -0.416, 2.000,
         0.624, 1.956, 3.400,
         0, 0, 1
     )
 
-    # Замість анімації зворотної матриці напряму,
-    # декомпозуємо оригінальну матрицю на складові (T, R, S)[cite: 21]
     orig_translation, orig_angle, orig_scales = decompose_affine3(T)
 
     print("--- 1. Оригінальні компоненти (T, R, S) ---")
@@ -70,12 +64,10 @@ if __name__ == '__main__':
     print(f"Кут (рад): {orig_angle}")
     print(f"Масштаб: {orig_scales}\n")
 
-    # 2. Розраховуємо зворотні компоненти
     inv_translation = vertex(-orig_translation[0], -orig_translation[1])
     inv_angle = -orig_angle
     inv_scale = (1.0 / orig_scales[0], 1.0 / orig_scales[1])
 
-    # 3. Визначаємо зворотну матрицю T_inv суто для перевірки координат[cite: 28, 36]
     T_inv = T.inverse()
     print("--- 2. Координати в локальній системі ---")
     for i in range(0, len(transformed_vertices), 2):
@@ -84,26 +76,24 @@ if __name__ == '__main__':
         local_vec = T_inv * vertex(x, y)
         print(f"P{i // 2 + 1} Глобальна: ({x}, {y}) -> Локальна: ({local_vec.x:.1f}, {local_vec.y:.1f})")
 
-    # 4. Анімація відновлення початкового положення
-    # Оскільки оригінальний порядок був S -> R -> T,
-    # зворотний порядок має бути: Переміщення^-1 -> Поворот^-1 -> Розтяг^-1
+
 
     anim_trans = TranslationAnimation(
         end=inv_translation,
         channel=ID_LOCAL,
-        apply_geometry_transformation_on_finish=True  # Застосовуємо трансформацію до геометрії[cite: 30, 44]
+        apply_geometry_transformation_on_finish=True
     )
 
     anim_rot = RotationAnimation(
         end=inv_angle,
         channel=ID_LOCAL,
-        apply_geometry_transformation_on_finish=True  # Застосовуємо трансформацію до геометрії[cite: 30, 44]
+        apply_geometry_transformation_on_finish=True
     )
 
     anim_scale = ScaleAnimation(
         end=inv_scale,
         channel=ID_LOCAL,
-        apply_geometry_transformation_on_finish=True  # Застосовуємо трансформацію до геометрії[cite: 30, 44]
+        apply_geometry_transformation_on_finish=True
     )
 
     scene.add_animations(anim_trans, anim_rot, anim_scale)
